@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Job Details – Robert Walter Recruitment Agency">
+    <title>Job Details – Robert Walter Recruitment Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        
+        :root {
+            --navy: #0a1628;
+            --navy-light: #13203a;
+            --navy-medium: #1a2d4a;
+            --gold: #c8a84e;
+            --gold-dark: #a88a35;
+            --white: #ffffff;
+            --gray-50: #f8f9fb;
+            --gray-100: #f1f3f6;
+            --gray-200: #e2e6ed;
+            --gray-300: #c5cad4;
+            --gray-600: #5a6377;
+            --gray-800: #1e293b;
+            --green: #25d366;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --gradient-1: linear-gradient(135deg, var(--navy) 0%, var(--navy-medium) 100%);
+            --gradient-2: linear-gradient(135deg, var(--gold) 0%, #dfc278 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navbar */
+        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
+        .gold-dot { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); text-decoration: none; }
+        .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+        .btn-primary:hover { background: var(--gold-dark); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+        .btn-block { width: 100%; justify-content: center; }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(200,168,78,0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(200,168,78,0); }
+            100% { box-shadow: 0 0 0 0 rgba(200,168,78,0); }
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-bar { background: var(--gray-50); border-bottom: 1px solid var(--gray-200); padding: 12px 0; }
+        .breadcrumb-nav { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .breadcrumb-nav a { color: var(--gray-600); text-decoration: none; }
+        .breadcrumb-nav a:hover { color: var(--gold-dark); }
+        .breadcrumb-nav i { font-size: 0.7rem; color: var(--gray-400); }
+        .breadcrumb-nav span { color: var(--navy); font-weight: 500; }
+
+        /* Section */
+        .section { padding: 60px 0; }
+        .bg-light { background: var(--gray-50); }
+        .gold-text { color: var(--gold); }
+
+        /* Job Detail Layout */
+        .job-detail-full { display: grid; grid-template-columns: 320px 1fr; gap: 30px; align-items: start; }
+        
+        /* Sidebar */
+        .job-detail-sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 20px; }
+        .detail-sidebar-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); overflow: hidden; }
+        .sidebar-card-header { padding: 16px 20px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+        .sidebar-card-header h3 { font-size: 1rem; }
+        .detail-info-list { list-style: none; padding: 12px 0; }
+        .detail-info-list li { display: flex; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--gray-100); }
+        .detail-info-list li:last-child { border-bottom: none; }
+        .detail-info-list li i { font-size: 1.1rem; color: var(--gold); margin-top: 2px; }
+        .detail-info-list li strong { display: block; font-size: 0.75rem; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-info-list li span { color: var(--navy); font-weight: 500; font-size: 0.9rem; }
+        .sidebar-actions { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .whatsapp-link, .email-link { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.9rem; text-decoration: none; margin-bottom: 8px; }
+        .whatsapp-link { background: #25d366; color: #fff; }
+        .whatsapp-link:hover { background: #1ebe5b; }
+        .email-link { background: var(--gray-100); color: var(--navy); }
+        .email-link:hover { background: var(--gray-200); }
+
+        /* Main Content */
+        .job-detail-main { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); padding: 40px; }
+        .detail-header { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--gray-200); }
+        .job-card-type { font-size: 0.8rem; padding: 6px 14px; border-radius: 50px; font-weight: 600; background: var(--gray-100); color: var(--gray-600); display: inline-flex; align-items: center; gap: 6px; }
+        .job-card-type.featured { background: rgba(200,168,78,0.15); color: var(--gold-dark); }
+        .detail-header h1 { font-size: 2rem; margin: 16px 0; }
+        .detail-header-meta { display: flex; gap: 20px; flex-wrap: wrap; color: var(--gray-600); font-size: 0.95rem; }
+        .detail-header-meta span { display: flex; align-items: center; gap: 6px; }
+        .detail-section { margin-bottom: 32px; }
+        .detail-section h3 { font-size: 1.2rem; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .detail-content { color: var(--gray-800); line-height: 1.8; }
+        .detail-content p { margin-bottom: 12px; }
+        .detail-apply-section { background: linear-gradient(135deg, rgba(200,168,78,0.1), rgba(200,168,78,0.05)); padding: 40px; border-radius: var(--radius); text-align: center; border: 1px solid rgba(200,168,78,0.2); }
+
+        /* Jobs Grid */
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+        .job-card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); cursor: pointer; }
+        .job-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+        .job-card h3 { font-size: 1.15rem; margin-bottom: 12px; }
+        .job-card-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--gray-600); margin-bottom: 12px; }
+        .job-card-meta span { display: flex; align-items: center; gap: 6px; }
+        .job-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--gray-200); }
+        .job-card-salary { color: var(--gold-dark); font-weight: 700; }
+        .job-card-link { color: var(--navy); font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+
+        /* Loading */
+        .loading-spinner { text-align: center; padding: 60px; }
+        .spinner { width: 48px; height: 48px; border: 4px solid var(--gray-200); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Section Header */
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.1); color: var(--gold-dark); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        .section-title { font-size: 2rem; margin-bottom: 12px; }
+        .section-subtitle { color: var(--gray-600); }
+
+        /* CTA Section */
+        .cta-section { background: var(--gradient-1); color: var(--white); text-align: center; }
+        .cta-section h2 { color: var(--white); margin-bottom: 12px; }
+        .cta-section p { color: rgba(255,255,255,0.75); margin-bottom: 24px; }
+
+        /* Footer */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; text-align: center; }
+
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .empty-state i { font-size: 4rem; color: var(--gray-300); margin-bottom: 16px; display: block; }
+        .empty-state h3 { margin-bottom: 8px; }
+        .empty-state p { color: var(--gray-600); margin-bottom: 20px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 20px; gap: 16px; }
+            .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .job-detail-full { grid-template-columns: 1fr; }
+            .job-detail-sidebar { position: static; order: 2; }
+            .job-detail-main { order: 1; padding: 24px; }
+            .detail-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">RW</div>
+            <div class="preloader-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="employers.html">Employers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-bar">
+            <div class="container">
+                <nav class="breadcrumb-nav">
+                    <a href="index.html"><i class="bi bi-house-fill"></i> Home</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <a href="jobs.html">Jobs</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <span id="breadcrumb-title">Job Details</span>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Job Detail Section -->
+        <section class="section">
+            <div class="container" id="job-detail-container">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading job details...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Jobs Section -->
+        <section class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="bi bi-link-45deg"></i> Similar Positions</span>
+                    <h2 class="section-title">Related <span class="gold-text">Jobs</span></h2>
+                    <p class="section-subtitle">Other opportunities you might be interested in</p>
+                </div>
+                <div class="jobs-grid" id="related-jobs-grid">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading related jobs...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Apply CTA -->
+        <section class="section cta-section" id="quick-apply-cta" style="display: none;">
+            <div class="container">
+                <h2>Ready to Apply?</h2>
+                <p>Take the next step in your career journey</p>
+                <a href="#" class="btn btn-primary btn-lg pulse-animation" id="quick-apply-btn">
+                    <i class="bi bi-send-fill"></i> Apply for This Position
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        // SAME CONFIG AS JOBS PAGE AND ADMIN DASHBOARD
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
+            authDomain: "studio-4335672844-604a7.firebaseapp.com",
+            projectId: "studio-4335672844-604a7",
+            storageBucket: "studio-4335672844-604a7.firebasestorage.app",
+            messagingSenderId: "320647254259",
+            appId: "1:320647254259:web:3015dd8629ffcb230be786"
+        };
+
+        // Initialize Firebase
+        let db = null;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            db.settings({ merge: true });
+            console.log('🔥 Firebase initialized - Job Details Page');
+        } catch (error) {
+            console.error('❌ Firebase init error:', error.message);
+        }
+
+        // ==================== DOM READY ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Initialize AOS
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 1000, once: true, offset: 100 });
+            }
+
+            // Hide preloader
+            setTimeout(() => {
+                document.getElementById('preloader')?.classList.add('hidden');
+            }, 500);
+
+            // Load job details from URL parameter
+            const params = new URLSearchParams(window.location.search);
+            const jobId = params.get('id');
+
+            if (jobId && db) {
+                loadJobDetails(jobId);
+            } else if (!jobId) {
+                showError('No job ID specified. Please go back and select a job.');
+            } else {
+                showError('Firebase not configured. Please check your configuration.');
+            }
+        });
+
+        // ==================== LOAD JOB DETAILS ====================
+        async function loadJobDetails(jobId) {
+            const container = document.getElementById('job-detail-container');
+            if (!container) return;
+
+            try {
+                console.log('🔄 Fetching job details for ID:', jobId);
+                
+                const doc = await db.collection('jobs').doc(jobId).get();
+
+                if (!doc.exists) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            <h3>Job Not Found</h3>
+                            <p>This position may have been filled or removed.</p>
+                            <a href="jobs.html" class="btn btn-primary">
+                                <i class="bi bi-arrow-left"></i> Browse All Jobs
+                            </a>
+                        </div>`;
+                    return;
+                }
+
+                const job = doc.data();
+                console.log('✅ Job loaded:', job.title);
+                
+                renderJobDetail(container, job, jobId);
+                
+                // Update breadcrumb
+                document.getElementById('breadcrumb-title').textContent = job.title || 'Job Details';
+                document.title = `${job.title || 'Position'} – Robert Walter Recruitment Agency`;
+
+                // Show quick apply CTA
+                const cta = document.getElementById('quick-apply-cta');
+                const applyBtn = document.getElementById('quick-apply-btn');
+                if (cta) cta.style.display = 'block';
+                if (applyBtn) applyBtn.href = `apply.html?jobId=${jobId}`;
+
+                // Load related jobs
+                loadRelatedJobs(job.category, jobId);
+
+            } catch (error) {
+                console.error('❌ Error loading job:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <h3>Error Loading Job</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-primary" onclick="location.reload()">
+                            <i class="bi bi-arrow-clockwise"></i> Retry
+                        </button>
+                    </div>`;
+            }
+        }
+
+        function renderJobDetail(container, job, jobId) {
+            const postedDate = job.createdAt?.toDate?.() || new Date();
+            const daysAgo = getDaysAgo(postedDate);
+
+            container.innerHTML = `
+            <div class="job-detail-full">
+                <div class="job-detail-sidebar">
+                    <div class="detail-sidebar-card">
+                        <div class="sidebar-card-header"><h3>Job Overview</h3></div>
+                        <ul class="detail-info-list">
+                            <li><i class="bi bi-building-fill"></i><div><strong>Company</strong><span>${job.company || 'Confidential'}</span></div></li>
+                            <li><i class="bi bi-geo-alt-fill"></i><div><strong>Location</strong><span>${job.country || 'Various'}</span></div></li>
+                            <li><i class="bi bi-briefcase-fill"></i><div><strong>Job Type</strong><span>${job.type || 'Full-time'}</span></div></li>
+                            <li><i class="bi bi-folder-fill"></i><div><strong>Category</strong><span>${job.category || 'General'}</span></div></li>
+                            <li><i class="bi bi-cash-stack"></i><div><strong>Salary</strong><span>${job.salary || 'Competitive'}</span></div></li>
+                            <li><i class="bi bi-calendar-fill"></i><div><strong>Posted</strong><span>${daysAgo}</span></div></li>
+                        </ul>
+                    </div>
+                    <div class="detail-sidebar-card">
+                        <div class="sidebar-card-header"><h3>Apply Now</h3></div>
+                        <div class="sidebar-actions">
+                            <a href="apply.html?jobId=${jobId}" class="btn btn-primary btn-block btn-lg">
+                                <i class="bi bi-send-fill"></i> Apply for This Job
+                            </a>
+                            <a href="https://wa.me/13436342629?text=I'm interested in the ${job.title} position" target="_blank" class="whatsapp-link">
+                                <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                            <a href="mailto:jobs@robertwaltersra.com?subject=Question about: ${job.title}" class="email-link">
+                                <i class="bi bi-envelope-fill"></i> Email Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="job-detail-main">
+                    <div class="detail-header">
+                        <span class="job-card-type ${job.featured ? 'featured' : ''}">
+                            <i class="bi bi-briefcase-fill"></i> ${job.type || 'Full-time'}
+                        </span>
+                        ${job.featured ? '<span style="color:var(--gold);font-size:0.8rem;margin-left:8px;"><i class="bi bi-star-fill"></i> Featured</span>' : ''}
+                        <h1>${job.title || 'Untitled Position'}</h1>
+                        <div class="detail-header-meta">
+                            <span><i class="bi bi-building"></i> ${job.company || 'Confidential'}</span>
+                            <span><i class="bi bi-geo-alt-fill"></i> ${job.country || 'Various'}</span>
+                            <span><i class="bi bi-folder-fill"></i> ${job.category || 'General'}</span>
+                            <span><i class="bi bi-calendar"></i> Posted ${daysAgo}</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h3><i class="bi bi-file-text-fill"></i> Description</h3>
+                        <div class="detail-content">${formatText(job.description || 'No description provided.')}</div>
+                    </div>
+                    ${job.requirements ? `
+                    <div class="detail-section">
+                        <h3><i class="bi bi-list-check"></i> Requirements</h3>
+                        <div class="detail-content">${formatText(job.requirements)}</div>
+                    </div>` : ''}
+                    ${job.benefits ? `
+                    <div class="detail-section">
+                        <h3><i class="bi bi-gift-fill"></i> Benefits</h3>
+                        <div class="detail-content">${formatText(job.benefits)}</div>
+                    </div>` : ''}
+                    <div class="detail-apply-section">
+                        <h3>Interested in this position?</h3>
+                        <p>Take the next step in your career journey</p>
+                        <a href="apply.html?jobId=${jobId}" class="btn btn-primary btn-lg pulse-animation">
+                            <i class="bi bi-send-fill"></i> Apply for This Position
+                        </a>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // ==================== LOAD RELATED JOBS ====================
+        async function loadRelatedJobs(category, excludeId) {
+            const grid = document.getElementById('related-jobs-grid');
+            if (!grid || !db) return;
+
+            try {
+                const snapshot = await db.collection('jobs')
+                    .where('category', '==', category)
+                    .limit(6)
+                    .get();
+
+                let relatedJobs = snapshot.docs
+                    .filter(d => d.id !== excludeId)
+                    .slice(0, 3);
+
+                if (relatedJobs.length === 0) {
+                    const allSnap = await db.collection('jobs').limit(3).get();
+                    relatedJobs = allSnap.docs.filter(d => d.id !== excludeId).slice(0, 3);
+                }
+
+                if (relatedJobs.length === 0) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--gray-600);">No related jobs at this time.</p>';
+                    return;
+                }
+
+                grid.innerHTML = relatedJobs.map(doc => {
+                    const job = doc.data();
+                    return `
+                    <div class="job-card" onclick="window.location.href='job-details.html?id=${doc.id}'">
+                        <div class="job-card-header">
+                            <span class="job-card-type"><i class="bi bi-briefcase-fill"></i> ${job.type || 'Full-time'}</span>
+                        </div>
+                        <h3>${job.title || 'Untitled'}</h3>
+                        <div class="job-card-meta">
+                            <span><i class="bi bi-geo-alt-fill"></i> ${job.country}</span>
+                            <span><i class="bi bi-folder-fill"></i> ${job.category}</span>
+                        </div>
+                        <div class="job-card-footer">
+                            <span class="job-card-salary"><i class="bi bi-cash"></i> ${job.salary || 'Competitive'}</span>
+                            <span class="job-card-link">View Details <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>`;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading related jobs:', error);
+                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--gray-600);">Could not load related jobs.</p>';
+            }
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function getDaysAgo(date) {
+            const diff = Math.floor((new Date() - date) / (1000 * 60 * 60 * 24));
+            if (diff === 0) return 'Today';
+            if (diff === 1) return 'Yesterday';
+            if (diff < 7) return `${diff} days ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function formatText(text) {
+            if (!text) return '<p>No information provided.</p>';
+            return text.split('\n').filter(line => line.trim()).map(line => `<p>${line}</p>`).join('');
+        }
+
+        function showError(message) {
+            const container = document.getElementById('job-detail-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                        <a href="jobs.html" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Back to Jobs
+                        </a>
+                    </div>`;
+            }
+        }
+    </script>
+</body>
+</html>

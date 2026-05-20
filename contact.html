@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Robert Walter Recruitment Agency – Global Talent Placement">
+    <title>Contact – Robert Walter Recruitment Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-light: #13203a;
+            --navy-medium: #1a2d4a;
+            --gold: #c8a84e;
+            --gold-light: #dfc278;
+            --gold-dark: #a88a35;
+            --white: #ffffff;
+            --gray-50: #f8f9fb;
+            --gray-100: #f1f3f6;
+            --gray-200: #e2e6ed;
+            --gray-300: #c5cad4;
+            --gray-600: #5a6377;
+            --gray-800: #1e293b;
+            --green: #25d366;
+            --red: #dc3545;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --gradient-1: linear-gradient(135deg, var(--navy) 0%, var(--navy-medium) 100%);
+            --gradient-2: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
+        .gold-dot { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+
+        /* ===== BUTTONS ===== */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); white-space: nowrap; text-decoration: none; }
+        .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+        .btn-primary:hover { background: var(--gold-dark); border-color: var(--gold-dark); transform: translateY(-3px); box-shadow: var(--shadow-xl); }
+        .btn-outline { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.4); }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); transform: translateY(-3px); }
+        .btn-whatsapp { background: #25d366; color: #fff; border-color: #25d366; }
+        .btn-whatsapp:hover { background: #1ebe5b; border-color: #1ebe5b; transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .btn-block { width: 100%; justify-content: center; }
+        .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero { background: var(--gradient-1); padding: 100px 0 80px; text-align: center; position: relative; overflow: hidden; }
+        .page-hero h1 { font-size: 3rem; color: var(--white); margin-bottom: 12px; }
+        .page-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; }
+        .gold-text { color: var(--gold); background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(200,168,78,0.05) 0%, transparent 70%); }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.15); border: 1px solid rgba(200,168,78,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; color: var(--white); margin-bottom: 20px; }
+
+        /* ===== SECTION ===== */
+        .section { padding: 80px 0; }
+        .bg-light { background: var(--gray-50); }
+
+        /* ===== CONTACT LAYOUT ===== */
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+        /* ===== CONTACT INFO CARDS ===== */
+        .contact-info-section { display: flex; flex-direction: column; gap: 24px; }
+        .info-card { background: var(--white); padding: 28px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); display: flex; gap: 16px; align-items: flex-start; }
+        .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+        .info-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .info-icon.blue { background: rgba(13,110,253,0.1); color: #0d6efd; }
+        .info-icon.green { background: rgba(25,135,84,0.1); color: #198754; }
+        .info-icon.gold { background: rgba(200,168,78,0.15); color: var(--gold-dark); }
+        .info-icon.purple { background: rgba(111,66,193,0.1); color: #6f42c1; }
+        .info-details h4 { font-size: 1rem; margin-bottom: 4px; color: var(--navy); }
+        .info-details p, .info-details a { color: var(--gray-600); font-size: 0.9rem; line-height: 1.6; }
+        .info-details a:hover { color: var(--gold-dark); }
+
+        /* ===== OFFICE LOCATIONS ===== */
+        .offices-section { margin-top: 8px; }
+        .offices-section h3 { font-size: 1.2rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .office-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        .office-card { background: var(--white); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); cursor: default; }
+        .office-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }
+        .office-card .flag { font-size: 2rem; display: block; margin-bottom: 6px; }
+        .office-card .city { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+        .office-card .country-name { font-size: 0.75rem; color: var(--gray-600); }
+
+        /* ===== FORM ===== */
+        .form-card { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200); }
+        .form-card h3 { font-size: 1.4rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .form-card .form-subtitle { color: var(--gray-600); font-size: 0.9rem; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--navy); font-size: 0.85rem; margin-bottom: 6px; }
+        .form-group label i { color: var(--gold); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.95rem; transition: var(--transition); background: var(--white);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-message { padding: 12px 16px; border-radius: var(--radius-sm); margin-top: 12px; font-weight: 500; font-size: 0.9rem; display: none; animation: slideIn 0.3s ease; }
+        .form-message.success { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .form-message.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== MAP SECTION ===== */
+        .map-section { background: var(--gray-50); padding: 0 0 80px; }
+        .map-container { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
+        .map-placeholder { background: linear-gradient(135deg, #e8ecf1, #d5dce4); height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray-600); }
+        .map-placeholder i { font-size: 4rem; color: var(--gold); margin-bottom: 16px; opacity: 0.6; }
+        .map-placeholder p { font-size: 1.1rem; font-weight: 500; }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner { background: var(--gradient-1); padding: 60px 0; text-align: center; color: var(--white); }
+        .cta-banner h2 { color: var(--white); font-size: 2rem; margin-bottom: 12px; }
+        .cta-banner p { color: rgba(255,255,255,0.75); margin-bottom: 24px; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* ===== TOAST ===== */
+        .toast-notification {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--navy); color: var(--white); padding: 14px 24px; border-radius: 50px;
+            display: flex; align-items: center; gap: 10px; font-weight: 500; box-shadow: var(--shadow-xl);
+            z-index: 9999; transition: transform 0.3s ease;
+        }
+        .toast-notification.show { transform: translateX(-50%) translateY(0); }
+        .toast-notification.success { background: #155724; }
+        .toast-notification.error { background: #721c24; }
+
+        /* ===== FOOTER ===== */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-bottom: 32px; }
+        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 20px; gap: 16px; }
+            .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .page-hero { padding: 60px 0 50px; }
+            .page-hero h1 { font-size: 2rem; }
+            .section { padding: 50px 0; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-card { padding: 24px; }
+            .office-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 1.6rem; }
+            .cta-banner h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="employers.html">Employers</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section class="page-hero">
+            <div class="hero-overlay"></div>
+            <div class="container" data-aos="fade-up">
+                <span class="hero-badge"><i class="bi bi-envelope-fill"></i> Get In Touch</span>
+                <h1>Contact <span class="gold-text">Us</span></h1>
+                <p>We'd love to hear from you. Reach out to our global team today.</p>
+            </div>
+        </section>
+
+        <!-- ===== MAIN CONTACT SECTION ===== -->
+        <section class="section">
+            <div class="container">
+                <div class="contact-wrapper">
+                    <!-- Left Column: Info + Offices -->
+                    <div class="contact-info-section" data-aos="fade-right">
+                        <div class="info-card">
+                            <div class="info-icon green"><i class="bi bi-telephone-fill"></i></div>
+                            <div class="info-details">
+                                <h4>Call Us</h4>
+                                <a href="tel:+13436342629">+1 343 634 2629</a>
+                                <p style="font-size:0.8rem;color:var(--gray-600);">Mon–Fri, 9am–6pm EST</p>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon blue"><i class="bi bi-envelope-fill"></i></div>
+                            <div class="info-details">
+                                <h4>Email Us</h4>
+                                <a href="mailto:info@robertwaltersra.com">info@robertwaltersra.com</a>
+                                <p style="font-size:0.8rem;color:var(--gray-600);">We reply within 2 hours</p>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon gold"><i class="bi bi-geo-alt-fill"></i></div>
+                            <div class="info-details">
+                                <h4>Head Office</h4>
+                                <p>123 Bay Street, Suite 400<br>Toronto, ON M5J 2R8<br>Canada</p>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon purple"><i class="bi bi-whatsapp"></i></div>
+                            <div class="info-details">
+                                <h4>WhatsApp</h4>
+                                <a href="https://wa.me/13436342629" target="_blank" rel="noopener">Chat with us instantly</a>
+                                <p style="font-size:0.8rem;color:var(--gray-600);">Available 24/7 for urgent inquiries</p>
+                            </div>
+                        </div>
+
+                        <!-- Office Locations -->
+                        <div class="offices-section">
+                            <h3><i class="bi bi-globe-americas" style="color:var(--gold);"></i> Our Global Offices</h3>
+                            <div class="office-grid" id="office-grid"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Form -->
+                    <div class="form-card" data-aos="fade-left">
+                        <h3><i class="bi bi-chat-dots-fill" style="color:var(--gold);"></i> Send Us a Message</h3>
+                        <p class="form-subtitle">Fill out the form below and we'll get back to you shortly.</p>
+                        <form id="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="bi bi-person-fill"></i> Full Name *</label>
+                                    <input type="text" id="contact-name" required placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="bi bi-envelope"></i> Email Address *</label>
+                                    <input type="email" id="contact-email" required placeholder="john@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="bi bi-telephone"></i> Phone Number</label>
+                                <input type="tel" id="contact-phone" placeholder="+1 234 567 890">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="bi bi-tag-fill"></i> Subject</label>
+                                <select id="contact-subject">
+                                    <option value="">Select a topic</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                    <option value="Job Application Help">Job Application Help</option>
+                                    <option value="Employer Services">Employer Services</option>
+                                    <option value="Partnership">Partnership Opportunity</option>
+                                    <option value="Feedback">Feedback</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="bi bi-pencil-fill"></i> Message *</label>
+                                <textarea id="contact-message" rows="5" required placeholder="How can we help you?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                <i class="bi bi-send-fill"></i> Send Message
+                            </button>
+                            <div class="form-message" id="contact-message-status"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MAP SECTION ===== -->
+        <section class="map-section">
+            <div class="container">
+                <div class="map-container" data-aos="fade-up">
+                    <div class="map-placeholder">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <p><strong>Robert Walter Recruitment Agency</strong></p>
+                        <p style="font-size:0.9rem;">Headquarters – Toronto, Canada</p>
+                        <p style="font-size:0.85rem;margin-top:4px;">Serving 19 countries worldwide</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA BANNER ===== -->
+        <section class="cta-banner">
+            <div class="container" data-aos="fade-up">
+                <h2>Looking for Talent or a New Opportunity?</h2>
+                <p>Our team is ready to help you achieve your goals.</p>
+                <div class="cta-buttons">
+                    <a href="jobs.html" class="btn btn-primary btn-lg"><i class="bi bi-briefcase-fill"></i> Browse Jobs</a>
+                    <a href="employers.html" class="btn btn-outline btn-lg"><i class="bi bi-building-fill"></i> Hire Talent</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Robert Walter RA</h4>
+                    <p>Connecting global talent with international opportunities since 2010.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="jobs.html">Browse Jobs</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="employers.html">For Employers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>📞 +1 343 634 2629</li>
+                        <li>📧 info@robertwaltersra.com</li>
+                        <li>📍 Toronto, Canada</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-PLACEHOLDER-KEY-REPLACE-WITH-YOURS",
+            authDomain: "robert-walter-ra.firebaseapp.com",
+            projectId: "robert-walter-ra",
+            storageBucket: "robert-walter-ra.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abc123def456"
+        };
+
+        let db = null;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            db.settings({ merge: true });
+            console.log('🔥 Firebase initialized');
+        } catch (error) {
+            console.warn('⚠️ Firebase not available:', error.message);
+        }
+
+        // ==================== DOM READY ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init({ duration: 1000, once: true, offset: 100, easing: 'ease-out-cubic' });
+
+            // Load offices
+            loadOfficeLocations();
+
+            // Setup contact form
+            setupContactForm();
+        });
+
+        // ==================== OFFICE LOCATIONS ====================
+        function loadOfficeLocations() {
+            const grid = document.getElementById('office-grid');
+            if (!grid) return;
+
+            const offices = [
+                { city: 'Toronto', country: 'Canada', flag: '🇨🇦' },
+                { city: 'Warsaw', country: 'Poland', flag: '🇵🇱' },
+                { city: 'Rome', country: 'Italy', flag: '🇮🇹' },
+                { city: 'Lisbon', country: 'Portugal', flag: '🇵🇹' },
+                { city: 'Valletta', country: 'Malta', flag: '🇲🇹' },
+                { city: 'Berlin', country: 'Germany', flag: '🇩🇪' },
+                { city: 'Paris', country: 'France', flag: '🇫🇷' },
+                { city: 'Zurich', country: 'Switzerland', flag: '🇨🇭' },
+                { city: 'Luxembourg', country: 'Luxembourg', flag: '🇱🇺' },
+                { city: 'Lagos', country: 'Nigeria', flag: '🇳🇬' },
+                { city: 'Monrovia', country: 'Liberia', flag: '🇱🇷' },
+                { city: 'Abidjan', country: 'Ivory Coast', flag: '🇨🇮' },
+                { city: 'Douala', country: 'Cameroon', flag: '🇨🇲' },
+                { city: 'Casablanca', country: 'Morocco', flag: '🇲🇦' },
+                { city: 'Freetown', country: 'Sierra Leone', flag: '🇸🇱' },
+                { city: 'Cape Town', country: 'South Africa', flag: '🇿🇦' },
+                { city: 'Nairobi', country: 'Kenya', flag: '🇰🇪' },
+                { city: 'Port Louis', country: 'Mauritius', flag: '🇲🇺' },
+                { city: 'Harare', country: 'Zimbabwe', flag: '🇿🇼' },
+            ];
+
+            grid.innerHTML = offices.map(office => `
+                <div class="office-card" data-aos="zoom-in" data-aos-delay="${Math.random() * 300}">
+                    <span class="flag">${office.flag}</span>
+                    <span class="city">${office.city}</span>
+                    <span class="country-name">${office.country}</span>
+                </div>
+            `).join('');
+        }
+
+        // ==================== CONTACT FORM ====================
+        function setupContactForm() {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const msgDiv = document.getElementById('contact-message-status');
+
+                const contactData = {
+                    name: document.getElementById('contact-name').value.trim(),
+                    email: document.getElementById('contact-email').value.trim(),
+                    phone: document.getElementById('contact-phone').value.trim(),
+                    subject: document.getElementById('contact-subject').value,
+                    message: document.getElementById('contact-message').value.trim(),
+                    createdAt: firebase.firestore?.FieldValue?.serverTimestamp() || new Date().toISOString(),
+                };
+
+                if (!contactData.name || !contactData.email || !contactData.message) {
+                    showFormMessage(msgDiv, '❌ Please fill all required fields (Name, Email, Message).', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+                msgDiv.className = 'form-message';
+                msgDiv.style.display = 'none';
+
+                try {
+                    if (db) {
+                        await db.collection('contacts').add(contactData);
+                        showFormMessage(msgDiv, '✅ Message sent successfully! We\'ll get back to you within 24 hours.', 'success');
+                        form.reset();
+                    } else {
+                        // Demo mode
+                        console.log('Contact form data:', contactData);
+                        showFormMessage(msgDiv, '✅ Message received (demo mode)! We\'ll be in touch soon.', 'success');
+                        form.reset();
+                    }
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    showFormMessage(msgDiv, '❌ Error sending message. Please try again or contact us directly.', 'error');
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-send-fill"></i> Send Message';
+
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    msgDiv.style.display = 'none';
+                    msgDiv.className = 'form-message';
+                }, 5000);
+            });
+        }
+
+        function showFormMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `form-message ${type}`;
+            element.style.display = 'block';
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

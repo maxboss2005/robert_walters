@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Robert Walter Recruitment Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <main>
+        <section class="section auth-section">
+            <div class="container auth-container">
+                <div class="auth-card">
+                    <h2>Welcome Back</h2>
+                    <p class="auth-subtitle">Login to your account</p>
+                    <form id="login-form">
+                        <div class="form-group"><label for="login-email">Email</label><input type="email" id="login-email" required></div>
+                        <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" required></div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <div id="login-message"></div>
+                    </form>
+                    <p class="auth-link">Don't have an account? <a href="register.html">Register here</a></p>
+                    <p class="auth-link"><a href="dashboard.html">Admin Dashboard →</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="footer-container"></div>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

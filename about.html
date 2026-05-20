@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Robert Walter Recruitment Agency – Global Talent Placement Experts">
+    <title>About Us – Robert Walter Recruitment Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-light: #13203a;
+            --navy-medium: #1a2d4a;
+            --gold: #c8a84e;
+            --gold-light: #dfc278;
+            --gold-dark: #a88a35;
+            --white: #ffffff;
+            --gray-50: #f8f9fb;
+            --gray-100: #f1f3f6;
+            --gray-200: #e2e6ed;
+            --gray-300: #c5cad4;
+            --gray-600: #5a6377;
+            --gray-800: #1e293b;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --gradient-1: linear-gradient(135deg, var(--navy) 0%, var(--navy-medium) 100%);
+            --gradient-2: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
+        .gold-dot { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+
+        /* ===== BUTTONS ===== */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); white-space: nowrap; text-decoration: none; }
+        .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+        .btn-primary:hover { background: var(--gold-dark); transform: translateY(-3px); box-shadow: var(--shadow-xl); }
+        .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold-dark); transform: translateY(-3px); }
+        .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero { background: var(--gradient-1); padding: 100px 0 80px; text-align: center; position: relative; overflow: hidden; }
+        .page-hero h1 { font-size: 3rem; color: var(--white); margin-bottom: 12px; }
+        .page-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; }
+        .gold-text { color: var(--gold); background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(200,168,78,0.05) 0%, transparent 70%); }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.15); border: 1px solid rgba(200,168,78,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; color: var(--white); margin-bottom: 20px; }
+
+        /* ===== SECTION ===== */
+        .section { padding: 80px 0; }
+        .bg-light { background: var(--gray-50); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.1); color: var(--gold-dark); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        .section-title { font-size: 2.5rem; margin-bottom: 16px; }
+        .section-subtitle { color: var(--gray-600); font-size: 1.1rem; max-width: 550px; margin: 0 auto; }
+
+        /* ===== ABOUT STORY ===== */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .about-text p { color: var(--gray-600); margin-bottom: 16px; font-size: 1.05rem; line-height: 1.8; }
+        .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+        .about-stat-card { background: var(--white); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); }
+        .about-stat-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }
+        .about-stat-card strong { display: block; font-size: 2rem; font-family: var(--font-heading); color: var(--gold); line-height: 1.2; }
+        .about-stat-card span { font-size: 0.85rem; color: var(--gray-600); }
+        .about-image-wrapper { position: relative; }
+        .about-image { background: var(--gradient-1); border-radius: var(--radius-lg); padding: 60px 40px; text-align: center; color: var(--white); position: relative; overflow: hidden; }
+        .about-image i { font-size: 5rem; color: var(--gold); margin-bottom: 16px; display: block; opacity: 0.8; }
+        .about-image h3 { color: var(--white); font-size: 1.5rem; margin-bottom: 8px; }
+        .about-image p { color: rgba(255,255,255,0.7); }
+        .experience-badge { position: absolute; top: -15px; right: -15px; background: var(--gold); color: var(--navy); padding: 20px 24px; border-radius: 50%; font-weight: 800; font-family: var(--font-heading); text-align: center; line-height: 1.2; font-size: 1.2rem; box-shadow: var(--shadow-lg); }
+        .experience-badge small { display: block; font-size: 0.7rem; }
+
+        /* ===== VALUES SECTION ===== */
+        .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+        .value-card { background: var(--white); padding: 36px 28px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); position: relative; overflow: hidden; }
+        .value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-2); transform: scaleX(0); transition: transform 0.3s; }
+        .value-card:hover::before { transform: scaleX(1); }
+        .value-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: var(--gold); }
+        .value-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.8rem; transition: var(--transition); }
+        .value-icon.integrity { background: rgba(13,110,253,0.1); color: #0d6efd; }
+        .value-icon.global { background: rgba(25,135,84,0.1); color: #198754; }
+        .value-icon.excellence { background: rgba(200,168,78,0.15); color: var(--gold-dark); }
+        .value-icon.partnership { background: rgba(111,66,193,0.1); color: #6f42c1; }
+        .value-card:hover .value-icon { transform: scale(1.1); }
+        .value-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+        .value-card p { color: var(--gray-600); font-size: 0.95rem; line-height: 1.6; }
+
+        /* ===== TIMELINE ===== */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 20px 0; }
+        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--gold); transform: translateX(-50%); }
+        .timeline-item { display: flex; align-items: center; margin-bottom: 40px; position: relative; }
+        .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+        .timeline-year { position: absolute; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-heading); z-index: 2; box-shadow: 0 0 0 8px rgba(200,168,78,0.2); font-size: 0.9rem; }
+        .timeline-content { width: 42%; padding: 24px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); }
+        .timeline-content:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+        .timeline-content h3 { font-size: 1.1rem; margin-bottom: 6px; color: var(--navy); }
+        .timeline-content p { color: var(--gray-600); font-size: 0.9rem; line-height: 1.5; }
+        .timeline-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 8px; }
+
+        /* ===== TEAM SECTION ===== */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+        .team-card { background: var(--white); padding: 32px 20px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); }
+        .team-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: var(--gold); }
+        .team-avatar { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 2rem; font-weight: 700; color: var(--navy); }
+        .team-avatar.av1 { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+        .team-avatar.av2 { background: linear-gradient(135deg, #f093fb, #f5576c); color: #fff; }
+        .team-avatar.av3 { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #fff; }
+        .team-avatar.av4 { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #fff; }
+        .team-avatar.av5 { background: linear-gradient(135deg, #fa709a, #fee140); color: #fff; }
+        .team-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
+        .team-card .role { color: var(--gold-dark); font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 8px; }
+        .team-card .location { color: var(--gray-600); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 4px; }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section { background: var(--gradient-1); color: var(--white); text-align: center; padding: 80px 0; }
+        .cta-section h2 { color: var(--white); font-size: 2.2rem; margin-bottom: 12px; }
+        .cta-section p { color: rgba(255,255,255,0.75); margin-bottom: 28px; font-size: 1.05rem; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* ===== FOOTER ===== */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-bottom: 32px; }
+        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .about-grid { grid-template-columns: 1fr; gap: 32px; }
+            .timeline::before { left: 30px; }
+            .timeline-year { left: 30px; width: 44px; height: 44px; font-size: 0.8rem; }
+            .timeline-content { width: calc(100% - 70px); margin-left: 55px; }
+            .timeline-item:nth-child(even) { flex-direction: row; }
+            .timeline-item:nth-child(even) .timeline-content { margin-left: 55px; margin-right: 0; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 20px; gap: 16px; }
+            .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .page-hero { padding: 60px 0 50px; }
+            .page-hero h1 { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+            .section { padding: 50px 0; }
+            .about-text h2 { font-size: 1.6rem; }
+            .about-stats { grid-template-columns: 1fr 1fr; }
+            .team-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 1.6rem; }
+            .about-stats { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr 1fr; }
+            .cta-section h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="employers.html">Employers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section class="page-hero">
+            <div class="hero-overlay"></div>
+            <div class="container" data-aos="fade-up">
+                <span class="hero-badge"><i class="bi bi-building-fill"></i> Who We Are</span>
+                <h1>About <span class="gold-text">Us</span></h1>
+                <p>Learn about our mission, values, and global impact</p>
+            </div>
+        </section>
+
+        <!-- ===== OUR STORY ===== -->
+        <section class="section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text" data-aos="fade-right">
+                        <div class="section-badge"><i class="bi bi-book-fill"></i> Our Journey</div>
+                        <h2>Our <span class="gold-text">Story</span></h2>
+                        <p>Founded in 2010, Robert Walter Recruitment Agency has grown from a small Canadian firm into a global talent powerhouse. We specialize in connecting skilled professionals with leading organizations across North America, Europe, and Africa.</p>
+                        <p>With headquarters in Canada and offices spanning <strong>19 countries</strong>, we bring a truly international perspective to recruitment. Our team of <strong>200+ recruitment specialists</strong> understands local markets while leveraging our global network to find the perfect match.</p>
+                        <div class="about-stats">
+                            <div class="about-stat-card" data-aos="zoom-in" data-aos-delay="100">
+                                <strong>15+</strong>
+                                <span>Years Experience</span>
+                            </div>
+                            <div class="about-stat-card" data-aos="zoom-in" data-aos-delay="200">
+                                <strong>19</strong>
+                                <span>Countries</span>
+                            </div>
+                            <div class="about-stat-card" data-aos="zoom-in" data-aos-delay="300">
+                                <strong>12,000+</strong>
+                                <span>Placements</span>
+                            </div>
+                            <div class="about-stat-card" data-aos="zoom-in" data-aos-delay="400">
+                                <strong>98%</strong>
+                                <span>Client Satisfaction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image-wrapper" data-aos="fade-left">
+                        <div class="about-image">
+                            <i class="bi bi-building"></i>
+                            <h3>Robert Walter HQ</h3>
+                            <p>Toronto, Canada</p>
+                            <div class="experience-badge">
+                                15+<br><small>Years</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== OUR VALUES ===== -->
+        <section class="section bg-light">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-badge"><i class="bi bi-star-fill"></i> What We Stand For</span>
+                    <h2 class="section-title">Our <span class="gold-text">Values</span></h2>
+                    <p class="section-subtitle">The principles that guide everything we do</p>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="value-icon integrity"><i class="bi bi-shield-check"></i></div>
+                        <h3>Integrity</h3>
+                        <p>We build trust through transparent and ethical recruitment practices, ensuring honesty in every interaction.</p>
+                    </div>
+                    <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="value-icon global"><i class="bi bi-globe-americas"></i></div>
+                        <h3>Global Perspective</h3>
+                        <p>We embrace diversity and connect talent across borders, celebrating cultural differences.</p>
+                    </div>
+                    <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="value-icon excellence"><i class="bi bi-trophy-fill"></i></div>
+                        <h3>Excellence</h3>
+                        <p>We strive for the highest standards in every placement, going above and beyond expectations.</p>
+                    </div>
+                    <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="value-icon partnership"><i class="bi bi-people-fill"></i></div>
+                        <h3>Partnership</h3>
+                        <p>We work closely with clients and candidates to build lasting relationships for long-term success.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== OUR JOURNEY TIMELINE ===== -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-badge"><i class="bi bi-clock-history"></i> Milestones</span>
+                    <h2 class="section-title">Our <span class="gold-text">Journey</span></h2>
+                    <p class="section-subtitle">Key milestones in our growth story</p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-year">2010</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon"><i class="bi bi-flag-fill"></i></div>
+                            <h3>Founded in Toronto</h3>
+                            <p>Robert Walter Recruitment Agency opens its first office in Toronto, Canada with a team of 5.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-year">2013</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon"><i class="bi bi-airplane-fill"></i></div>
+                            <h3>European Expansion</h3>
+                            <p>Opened offices in Germany, France, and Poland, beginning our European presence.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-year">2016</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                            <h3>5,000th Placement</h3>
+                            <p>Celebrated our 5,000th successful placement and expanded to 10 countries.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-year">2019</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon"><i class="bi bi-globe2"></i></div>
+                            <h3>African Market Entry</h3>
+                            <p>Expanded into Nigeria, South Africa, Kenya, and other African nations.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon"><i class="bi bi-rocket-takeoff-fill"></i></div>
+                            <h3>19 Countries & Growing</h3>
+                            <p>Now operating across 19 countries with 200+ specialists and 12,000+ placements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== LEADERSHIP TEAM ===== -->
+        <section class="section bg-light">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-badge"><i class="bi bi-people-fill"></i> Leadership</span>
+                    <h2 class="section-title">Meet Our <span class="gold-text">Team</span></h2>
+                    <p class="section-subtitle">The leaders driving our global mission</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="team-avatar av1">RW</div>
+                        <h3>Robert Walter</h3>
+                        <span class="role">Founder & CEO</span>
+                        <span class="location"><i class="bi bi-geo-alt-fill"></i> Toronto, Canada</span>
+                    </div>
+                    <div class="team-card" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="team-avatar av2">SM</div>
+                        <h3>Sarah Mitchell</h3>
+                        <span class="role">Chief Operations Officer</span>
+                        <span class="location"><i class="bi bi-geo-alt-fill"></i> Berlin, Germany</span>
+                    </div>
+                    <div class="team-card" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="team-avatar av3">KO</div>
+                        <h3>Kwame Osei</h3>
+                        <span class="role">Director, African Markets</span>
+                        <span class="location"><i class="bi bi-geo-alt-fill"></i> Lagos, Nigeria</span>
+                    </div>
+                    <div class="team-card" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="team-avatar av4">MP</div>
+                        <h3>Maria Pereira</h3>
+                        <span class="role">Head of European Operations</span>
+                        <span class="location"><i class="bi bi-geo-alt-fill"></i> Lisbon, Portugal</span>
+                    </div>
+                    <div class="team-card" data-aos="zoom-in" data-aos-delay="500">
+                        <div class="team-avatar av5">JL</div>
+                        <h3>Jean-Luc Dubois</h3>
+                        <span class="role">Global Partnerships Lead</span>
+                        <span class="location"><i class="bi bi-geo-alt-fill"></i> Paris, France</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA ===== -->
+        <section class="cta-section">
+            <div class="container" data-aos="fade-up">
+                <h2>Want to Join Our Team or Partner With Us?</h2>
+                <p>We're always looking for talented individuals and great companies to work with.</p>
+                <div class="cta-buttons">
+                    <a href="jobs.html" class="btn btn-primary btn-lg"><i class="bi bi-briefcase-fill"></i> View Open Positions</a>
+                    <a href="contact.html" class="btn btn-outline btn-lg" style="color:white;border-color:rgba(255,255,255,0.4);"><i class="bi bi-envelope-fill"></i> Get In Touch</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Robert Walter RA</h4>
+                    <p>Connecting global talent with international opportunities since 2010.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="jobs.html">Browse Jobs</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="employers.html">For Employers</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>📞 +1 343 634 2629</li>
+                        <li>📧 info@robertwaltersra.com</li>
+                        <li>📍 Toronto, Canada</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 1000, once: true, offset: 100, easing: 'ease-out-cubic' });
+    </script>
+</body>
+</html>

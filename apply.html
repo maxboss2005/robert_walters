@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apply for Jobs – Robert Walter Recruitment Agency">
+    <title>Apply – Robert Walter Recruitment Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-light: #13203a;
+            --navy-medium: #1a2d4a;
+            --gold: #c8a84e;
+            --gold-light: #dfc278;
+            --gold-dark: #a88a35;
+            --white: #ffffff;
+            --gray-50: #f8f9fb;
+            --gray-100: #f1f3f6;
+            --gray-200: #e2e6ed;
+            --gray-300: #c5cad4;
+            --gray-600: #5a6377;
+            --gray-800: #1e293b;
+            --green: #198754;
+            --red: #dc3545;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --gradient-1: linear-gradient(135deg, var(--navy) 0%, var(--navy-medium) 100%);
+            --gradient-2: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
+        .gold-dot { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+
+        /* ===== BUTTONS ===== */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); white-space: nowrap; text-decoration: none; }
+        .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+        .btn-primary:hover { background: var(--gold-dark); transform: translateY(-3px); box-shadow: var(--shadow-xl); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold-dark); }
+        .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero { background: var(--gradient-1); padding: 80px 0 60px; text-align: center; position: relative; overflow: hidden; }
+        .page-hero h1 { font-size: 2.8rem; color: var(--white); margin-bottom: 12px; }
+        .page-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; }
+        .gold-text { color: var(--gold); background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(200,168,78,0.05) 0%, transparent 70%); }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.15); border: 1px solid rgba(200,168,78,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; color: var(--white); margin-bottom: 20px; }
+
+        /* ===== SECTION ===== */
+        .section { padding: 60px 0; }
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-bar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 12px 0; }
+        .breadcrumb-nav { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .breadcrumb-nav a { color: var(--gray-600); }
+        .breadcrumb-nav a:hover { color: var(--gold-dark); }
+        .breadcrumb-nav i { font-size: 0.7rem; color: var(--gray-400); }
+        .breadcrumb-nav span { color: var(--navy); font-weight: 500; }
+
+        /* ===== APPLICATION LAYOUT ===== */
+        .apply-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: start; }
+
+        /* ===== JOB PREVIEW CARD ===== */
+        .job-preview-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); padding: 32px; position: sticky; top: 90px; }
+        .job-preview-card .preview-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .job-preview-card .preview-badge { padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; background: rgba(200,168,78,0.15); color: var(--gold-dark); display: inline-flex; align-items: center; gap: 6px; }
+        .job-preview-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
+        .job-preview-card .company-name { color: var(--gray-600); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+        .preview-meta { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .preview-meta span { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--gray-600); }
+        .preview-meta span i { color: var(--gold); font-size: 1rem; width: 20px; text-align: center; }
+        .preview-description { color: var(--gray-600); font-size: 0.9rem; line-height: 1.7; padding-top: 16px; border-top: 1px solid var(--gray-200); }
+        .preview-description p { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* ===== APPLICATION TIPS ===== */
+        .application-tips { background: rgba(200,168,78,0.05); border: 1px solid rgba(200,168,78,0.2); border-radius: var(--radius-sm); padding: 20px; margin-top: 20px; }
+        .application-tips h4 { font-size: 0.9rem; color: var(--navy); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .application-tips ul { list-style: none; }
+        .application-tips ul li { font-size: 0.85rem; color: var(--gray-600); padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+        .application-tips ul li i { color: var(--gold); font-size: 0.8rem; }
+
+        /* ===== FORM CARD ===== */
+        .form-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200); padding: 40px; }
+        .form-card .form-header { margin-bottom: 28px; }
+        .form-card .form-header h3 { font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+        .form-card .form-header p { color: var(--gray-600); font-size: 0.9rem; margin-top: 4px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--navy); font-size: 0.85rem; margin-bottom: 6px; }
+        .form-group label i { color: var(--gold); }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.95rem; transition: var(--transition); background: var(--white);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+        }
+        .form-group .hint { font-size: 0.78rem; color: var(--gray-600); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* ===== FILE UPLOAD ===== */
+        .file-upload-wrapper { position: relative; }
+        .file-upload-area {
+            border: 2px dashed var(--gray-300); border-radius: var(--radius-sm); padding: 32px;
+            text-align: center; cursor: pointer; transition: var(--transition); background: var(--gray-50);
+        }
+        .file-upload-area:hover, .file-upload-area.dragover { border-color: var(--gold); background: rgba(200,168,78,0.05); }
+        .file-upload-area i { font-size: 2.5rem; color: var(--gold); margin-bottom: 8px; display: block; }
+        .file-upload-area p { font-size: 0.9rem; color: var(--gray-600); }
+        .file-upload-area .browse-link { color: var(--gold-dark); font-weight: 600; text-decoration: underline; cursor: pointer; }
+        .file-upload-area input[type="file"] { display: none; }
+        .file-info { display: none; align-items: center; gap: 10px; padding: 12px 16px; background: #d4edda; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.85rem; color: #155724; }
+        .file-info.show { display: flex; }
+        .file-info .remove-file { margin-left: auto; cursor: pointer; color: var(--red); background: none; border: none; font-size: 1rem; }
+
+        /* ===== PROGRESS STEPS ===== */
+        .progress-steps { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; }
+        .progress-step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; background: var(--gray-200); color: var(--gray-600); transition: var(--transition); }
+        .progress-step.active { background: var(--gold); color: var(--navy); }
+        .progress-step.completed { background: var(--green); color: #fff; }
+        .progress-line { flex: 1; height: 2px; background: var(--gray-200); margin-top: 15px; max-width: 40px; }
+        .progress-line.completed { background: var(--green); }
+
+        /* ===== MESSAGES ===== */
+        .form-message { padding: 14px 18px; border-radius: var(--radius-sm); margin-top: 16px; font-weight: 500; font-size: 0.9rem; display: none; animation: slideIn 0.3s ease; }
+        .form-message.success { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .form-message.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== SUCCESS STATE ===== */
+        .success-state { text-align: center; padding: 40px; display: none; }
+        .success-state.show { display: block; animation: slideIn 0.5s ease; }
+        .success-state i { font-size: 5rem; color: var(--green); margin-bottom: 16px; }
+        .success-state h2 { color: var(--navy); margin-bottom: 8px; }
+        .success-state p { color: var(--gray-600); margin-bottom: 24px; }
+
+        /* ===== FOOTER ===== */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-bottom: 32px; }
+        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .apply-layout { grid-template-columns: 1fr; }
+            .job-preview-card { position: static; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 20px; gap: 16px; }
+            .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .page-hero { padding: 50px 0 40px; }
+            .page-hero h1 { font-size: 2rem; }
+            .form-card { padding: 24px; }
+            .form-row { grid-template-columns: 1fr; }
+            .section { padding: 40px 0; }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 1.6rem; }
+            .job-preview-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="employers.html">Employers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section class="page-hero">
+            <div class="hero-overlay"></div>
+            <div class="container" data-aos="fade-up">
+                <span class="hero-badge"><i class="bi bi-send-fill"></i> Job Application</span>
+                <h1>Apply for <span class="gold-text">Position</span></h1>
+                <p>Submit your application and take the next step in your career</p>
+            </div>
+        </section>
+
+        <!-- ===== BREADCRUMB ===== -->
+        <div class="breadcrumb-bar">
+            <div class="container">
+                <nav class="breadcrumb-nav">
+                    <a href="index.html"><i class="bi bi-house-fill"></i> Home</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <a href="jobs.html">Jobs</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <span id="breadcrumb-job-title">Apply</span>
+                </nav>
+            </div>
+        </div>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <section class="section">
+            <div class="container">
+                <div class="apply-layout">
+                    <!-- Left Column: Job Preview -->
+                    <div class="job-preview-card" data-aos="fade-right" id="job-preview-card">
+                        <div class="preview-header">
+                            <span class="preview-badge" id="preview-type"><i class="bi bi-briefcase-fill"></i> Loading...</span>
+                        </div>
+                        <h2 id="preview-title">Loading position...</h2>
+                        <div class="company-name" id="preview-company">
+                            <i class="bi bi-building"></i> Loading...
+                        </div>
+                        <div class="preview-meta">
+                            <span id="preview-location"><i class="bi bi-geo-alt-fill"></i> Loading...</span>
+                            <span id="preview-category"><i class="bi bi-folder-fill"></i> Loading...</span>
+                            <span id="preview-salary"><i class="bi bi-cash-stack"></i> Loading...</span>
+                        </div>
+                        <div class="preview-description" id="preview-description">
+                            <p>Loading job description...</p>
+                        </div>
+                        <div class="application-tips">
+                            <h4><i class="bi bi-lightbulb-fill"></i> Application Tips</h4>
+                            <ul>
+                                <li><i class="bi bi-check2"></i> Tailor your CV to the job description</li>
+                                <li><i class="bi bi-check2"></i> Include relevant skills and experience</li>
+                                <li><i class="bi bi-check2"></i> Proofread before submitting</li>
+                                <li><i class="bi bi-check2"></i> PDF format preferred for CV</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Application Form -->
+                    <div class="form-card" data-aos="fade-left" id="form-card">
+                        <!-- Progress Steps -->
+                        <div class="progress-steps">
+                            <div class="progress-step active" id="step-1">1</div>
+                            <div class="progress-line" id="line-1"></div>
+                            <div class="progress-step" id="step-2">2</div>
+                            <div class="progress-line" id="line-2"></div>
+                            <div class="progress-step" id="step-3">3</div>
+                        </div>
+
+                        <!-- Form -->
+                        <div id="form-content">
+                            <div class="form-header">
+                                <h3><i class="bi bi-pencil-square" style="color:var(--gold);"></i> Submit Your Application</h3>
+                                <p>Fill out the form below to apply for this position</p>
+                            </div>
+                            <form id="application-form" enctype="multipart/form-data">
+                                <input type="hidden" id="job-id-input">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label><i class="bi bi-person-fill"></i> Full Name *</label>
+                                        <input type="text" id="full-name" required placeholder="John Doe" oninput="updateProgress()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="bi bi-envelope-fill"></i> Email Address *</label>
+                                        <input type="email" id="email" required placeholder="john@example.com" oninput="updateProgress()">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label><i class="bi bi-telephone-fill"></i> Phone Number *</label>
+                                        <input type="tel" id="phone" required placeholder="+1 234 567 890" oninput="updateProgress()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="bi bi-linkedin"></i> LinkedIn Profile</label>
+                                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label><i class="bi bi-cloud-upload-fill"></i> Upload CV (PDF/DOC) *</label>
+                                    <div class="file-upload-wrapper">
+                                        <div class="file-upload-area" id="file-upload-area" onclick="document.getElementById('cv-upload').click()">
+                                            <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                            <p>Drag & drop your CV here or <span class="browse-link">browse files</span></p>
+                                            <p style="font-size:0.78rem;color:var(--gray-600);">PDF, DOC, or DOCX (Max 5MB)</p>
+                                        </div>
+                                        <input type="file" id="cv-upload" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event)" oninput="updateProgress()">
+                                        <div class="file-info" id="file-info">
+                                            <i class="bi bi-file-earmark-check-fill"></i>
+                                            <span id="file-name"></span>
+                                            <span id="file-size"></span>
+                                            <button type="button" class="remove-file" onclick="removeFile()" title="Remove file">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label><i class="bi bi-pencil-fill"></i> Cover Letter</label>
+                                    <textarea id="cover-letter" rows="5" placeholder="Tell us why you're a great fit for this position... (optional)" oninput="updateProgress()"></textarea>
+                                    <span class="hint"><i class="bi bi-info-circle"></i> Optional but recommended – a good cover letter increases your chances</span>
+                                </div>
+
+                                <div class="form-group" style="background:var(--gray-50);padding:16px;border-radius:var(--radius-sm);">
+                                    <strong style="display:flex;align-items:center;gap:8px;color:var(--navy);">
+                                        <i class="bi bi-briefcase-fill" style="color:var(--gold);"></i>
+                                        Applying for:
+                                    </strong>
+                                    <span id="display-job-title" style="color:var(--gold-dark);font-weight:600;font-size:1.05rem;">Loading...</span>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-application">
+                                    <i class="bi bi-send-fill"></i> Submit Application
+                                </button>
+                                <div class="form-message" id="application-message"></div>
+                            </form>
+                        </div>
+
+                        <!-- Success State -->
+                        <div class="success-state" id="success-state">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <h2>Application Submitted!</h2>
+                            <p>Thank you for your application. Our team will review it and get back to you within 5-7 business days.</p>
+                            <a href="jobs.html" class="btn btn-primary"><i class="bi bi-briefcase-fill"></i> Browse More Jobs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Robert Walter RA</h4>
+                    <p>Connecting global talent with international opportunities since 2010.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="jobs.html">Browse Jobs</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="employers.html">For Employers</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>📞 +1 343 634 2629</li>
+                        <li>📧 info@robertwaltersra.com</li>
+                        <li>📍 Toronto, Canada</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+                apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
+                authDomain: "studio-4335672844-604a7.firebaseapp.com",
+                projectId: "studio-4335672844-604a7",
+                storageBucket: "studio-4335672844-604a7.firebasestorage.app",
+                messagingSenderId: "320647254259",
+                appId: "1:320647254259:web:3015dd8629ffcb230be786"
+        };
+
+        let db = null;
+        let storage = null;
+        let firebaseReady = false;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            storage = firebase.storage();
+            db.settings({ merge: true });
+            firebaseReady = true;
+            console.log('🔥 Firebase initialized');
+        } catch (error) {
+            console.warn('⚠️ Firebase not available:', error.message);
+        }
+
+        // ==================== DOM READY ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 1000, once: true, offset: 100, easing: 'ease-out-cubic' });
+
+            const params = new URLSearchParams(window.location.search);
+            const jobId = params.get('jobId');
+
+            if (jobId) {
+                document.getElementById('job-id-input').value = jobId;
+                loadJobPreview(jobId);
+            } else {
+                document.getElementById('display-job-title').textContent = 'No job selected';
+                document.getElementById('preview-title').textContent = 'No position specified';
+            }
+
+            setupForm();
+            setupFileDragDrop();
+        });
+
+        // ==================== LOAD JOB PREVIEW ====================
+        async function loadJobPreview(jobId) {
+            try {
+                if (db) {
+                    const doc = await db.collection('jobs').doc(jobId).get();
+                    if (doc.exists) {
+                        const job = doc.data();
+                        updateJobPreview(job);
+                        document.getElementById('display-job-title').textContent = job.title || 'Untitled';
+                        document.getElementById('breadcrumb-job-title').textContent = job.title || 'Apply';
+                        document.title = `Apply – ${job.title || 'Position'} – Robert Walter RA`;
+                    } else {
+                        showPreviewFallback();
+                    }
+                } else {
+                    showPreviewFallback();
+                }
+            } catch (error) {
+                console.error('Error loading job:', error);
+                showPreviewFallback();
+            }
+        }
+
+        function updateJobPreview(job) {
+            document.getElementById('preview-type').innerHTML = `<i class="bi bi-briefcase-fill"></i> ${job.type || 'Full-time'}`;
+            document.getElementById('preview-title').textContent = job.title || 'Untitled Position';
+            document.getElementById('preview-company').innerHTML = `<i class="bi bi-building"></i> ${job.company || 'Confidential'}`;
+            document.getElementById('preview-location').innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${job.country || 'Various'}`;
+            document.getElementById('preview-category').innerHTML = `<i class="bi bi-folder-fill"></i> ${job.category || 'General'}`;
+            document.getElementById('preview-salary').innerHTML = `<i class="bi bi-cash-stack"></i> ${job.salary || 'Competitive'}`;
+            document.getElementById('preview-description').innerHTML = `<p>${truncateText(job.description || 'No description available.', 250)}</p>`;
+            document.getElementById('display-job-title').textContent = job.title || 'Untitled';
+            document.getElementById('breadcrumb-job-title').textContent = job.title || 'Apply';
+            document.title = `Apply – ${job.title || 'Position'} – Robert Walter RA`;
+        }
+
+        function showPreviewFallback() {
+            document.getElementById('preview-title').textContent = 'Position Details';
+            document.getElementById('preview-company').innerHTML = '<i class="bi bi-building"></i> Robert Walter Recruitment';
+            document.getElementById('preview-location').innerHTML = '<i class="bi bi-geo-alt-fill"></i> Various Locations';
+            document.getElementById('preview-salary').innerHTML = '<i class="bi bi-cash-stack"></i> Competitive';
+            document.getElementById('preview-description').innerHTML = '<p>Apply for this exciting opportunity through Robert Walter Recruitment Agency.</p>';
+            document.getElementById('display-job-title').textContent = 'General Application';
+        }
+
+        // ==================== FILE HANDLING ====================
+        function setupFileDragDrop() {
+            const area = document.getElementById('file-upload-area');
+            if (!area) return;
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                area.addEventListener(eventName, e => { e.preventDefault();
+                    e.stopPropagation(); });
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                area.addEventListener(eventName, () => area.classList.add('dragover'));
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                area.addEventListener(eventName, () => area.classList.remove('dragover'));
+            });
+
+            area.addEventListener('drop', e => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    document.getElementById('cv-upload').files = files;
+                    handleFileSelect({ target: { files } });
+                }
+            });
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+
+            if (!file) {
+                fileInfo.classList.remove('show');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('❌ File size exceeds 5MB limit. Please choose a smaller file.', 'error');
+                document.getElementById('cv-upload').value = '';
+                fileInfo.classList.remove('show');
+                return;
+            }
+
+            const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!validTypes.includes(file.type)) {
+                showMessage('❌ Invalid file type. Please upload PDF, DOC, or DOCX files only.', 'error');
+                document.getElementById('cv-upload').value = '';
+                fileInfo.classList.remove('show');
+                return;
+            }
+
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.classList.add('show');
+            updateProgress();
+        }
+
+        function removeFile() {
+            document.getElementById('cv-upload').value = '';
+            document.getElementById('file-info').classList.remove('show');
+            updateProgress();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return `(${bytes} B)`;
+            if (bytes < 1048576) return `(${(bytes / 1024).toFixed(1)} KB)`;
+            return `(${(bytes / 1048576).toFixed(1)} MB)`;
+        }
+
+        // ==================== PROGRESS TRACKING ====================
+        function updateProgress() {
+            let completed = 0;
+            if (document.getElementById('full-name')?.value.trim()) completed++;
+            if (document.getElementById('email')?.value.trim()) completed++;
+            if (document.getElementById('phone')?.value.trim()) completed++;
+            if (document.getElementById('cv-upload')?.files.length > 0) completed++;
+
+            document.getElementById('step-1').className = 'progress-step' + (completed >= 2 ? ' completed' : completed >= 1 ? ' active' : '');
+            document.getElementById('line-1').className = 'progress-line' + (completed >= 2 ? ' completed' : '');
+            document.getElementById('step-2').className = 'progress-step' + (completed >= 3 ? ' completed' : completed >= 2 ? ' active' : '');
+            document.getElementById('line-2').className = 'progress-line' + (completed >= 3 ? ' completed' : '');
+            document.getElementById('step-3').className = 'progress-step' + (completed >= 4 ? ' completed' : completed >= 3 ? ' active' : '');
+        }
+
+        // ==================== FORM SUBMISSION ====================
+        function setupForm() {
+            const form = document.getElementById('application-form');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submit-application');
+                const msgDiv = document.getElementById('application-message');
+
+                const jobId = document.getElementById('job-id-input').value;
+                const fullName = document.getElementById('full-name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const linkedin = document.getElementById('linkedin').value.trim();
+                const cvFile = document.getElementById('cv-upload').files[0];
+                const coverLetter = document.getElementById('cover-letter').value.trim();
+
+                // Validation
+                if (!jobId) { showMessage('❌ No job selected. Please go back and select a job.', 'error'); return; }
+                if (!fullName || !email || !phone) { showMessage('❌ Please fill all required fields.', 'error'); return; }
+                if (!cvFile) { showMessage('❌ Please upload your CV.', 'error'); return; }
+                if (cvFile.size > 5 * 1024 * 1024) { showMessage('❌ CV file must be under 5MB.', 'error'); return; }
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                msgDiv.className = 'form-message';
+                msgDiv.style.display = 'none';
+
+                try {
+                    let cvUrl = '';
+                    let cvFileName = cvFile.name;
+
+                    if (firebaseReady && storage) {
+                        // Upload CV to Firebase Storage
+                        const storageRef = storage.ref(`cvs/${Date.now()}_${cvFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
+                        const uploadSnapshot = await storageRef.put(cvFile);
+                        cvUrl = await uploadSnapshot.ref.getDownloadURL();
+                    } else {
+                        // Demo mode - simulate upload
+                        cvUrl = 'https://example.com/demo-cv.pdf';
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+
+                    const applicationData = {
+                        jobId,
+                        fullName,
+                        email,
+                        phone,
+                        linkedin,
+                        cvUrl,
+                        cvFileName,
+                        coverLetter,
+                        status: 'new',
+                        createdAt: firebase.firestore?.FieldValue?.serverTimestamp() || new Date().toISOString(),
+                    };
+
+                    if (db) {
+                        await db.collection('applications').add(applicationData);
+                    } else {
+                        console.log('Application data (demo):', applicationData);
+                    }
+
+                    // Show success
+                    showSuccess();
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    showMessage('❌ Error submitting application. Please try again or contact us directly.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Application';
+                }
+            });
+        }
+
+        function showSuccess() {
+            document.getElementById('form-content').style.display = 'none';
+            document.getElementById('success-state').classList.add('show');
+            document.getElementById('job-preview-card').style.opacity = '0.5';
+        }
+
+        function showMessage(message, type) {
+            const msgDiv = document.getElementById('application-message');
+            msgDiv.textContent = message;
+            msgDiv.className = `form-message ${type}`;
+            msgDiv.style.display = 'block';
+            msgDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => { msgDiv.style.display = 'none';
+                msgDiv.className = 'form-message'; }, 5000);
+        }
+
+        function truncateText(text, max) {
+            if (!text || text.length <= max) return text || '';
+            return text.substring(0, max).trim() + '...';
+        }
+    </script>
+</body>
+</html>
