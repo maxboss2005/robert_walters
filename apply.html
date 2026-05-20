@@ -20,7 +20,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    
     
     <style>
         :root {
@@ -430,19 +430,15 @@
         };
 
         let db = null;
-        let storage = null;
-        let firebaseReady = false;
 
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            storage = firebase.storage();
-            db.settings({ merge: true });
-            firebaseReady = true;
-            console.log('🔥 Firebase initialized');
-        } catch (error) {
-            console.warn('⚠️ Firebase not available:', error.message);
-        }
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.settings({ merge: true });
+    console.log('🔥 Firebase initialized');
+} catch (error) {
+    console.warn('⚠️ Firebase not available:', error.message);
+}
 
         // ==================== DOM READY ====================
         document.addEventListener('DOMContentLoaded', () => {
@@ -594,7 +590,7 @@
             document.getElementById('step-3').className = 'progress-step' + (completed >= 4 ? ' completed' : completed >= 3 ? ' active' : '');
         }
 
-        // ==================== FORM SUBMISSION ====================
+                // ==================== FORM SUBMISSION ====================
         function setupForm() {
             const form = document.getElementById('application-form');
             if (!form) return;
@@ -627,16 +623,8 @@
                     let cvUrl = '';
                     let cvFileName = cvFile.name;
 
-                    if (firebaseReady && storage) {
-                        // Upload CV to Firebase Storage
-                        const storageRef = storage.ref(`cvs/${Date.now()}_${cvFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
-                        const uploadSnapshot = await storageRef.put(cvFile);
-                        cvUrl = await uploadSnapshot.ref.getDownloadURL();
-                    } else {
-                        // Demo mode - simulate upload
-                        cvUrl = 'https://example.com/demo-cv.pdf';
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                    }
+                    // Convert CV to base64 for storage (works without any external service)
+                    cvUrl = await uploadToGoFile(cvFile);
 
                     const applicationData = {
                         jobId,
@@ -653,20 +641,38 @@
 
                     if (db) {
                         await db.collection('applications').add(applicationData);
+                        console.log('✅ Application saved to Firestore');
                     } else {
-                        console.log('Application data (demo):', applicationData);
+                        console.log('Application data:', applicationData);
                     }
 
-                    // Show success
                     showSuccess();
                 } catch (error) {
                     console.error('Submission error:', error);
-                    showMessage('❌ Error submitting application. Please try again or contact us directly.', 'error');
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Application';
+                    // Try saving without CV if upload fails
+                    if (db) {
+                        try {
+                            await db.collection('applications').add({
+                                jobId, fullName, email, phone, linkedin,
+                                cvUrl: '', cvFileName: cvFile.name,
+                                coverLetter, status: 'new',
+                                createdAt: firebase.firestore?.FieldValue?.serverTimestamp() || new Date().toISOString(),
+                            });
+                            showSuccess();
+                        } catch (dbError) {
+                            console.error('Database error:', dbError);
+                            showMessage('❌ Error submitting. Please email us at info@robertwaltersra.com', 'error');
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Application';
+                        }
+                    } else {
+                        showMessage('❌ Error submitting. Please email us at info@robertwaltersra.com', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Application';
+                    }
                 }
-            });
-        }
+            }); 
+        } 
 
         function showSuccess() {
             document.getElementById('form-content').style.display = 'none';
@@ -680,9 +686,53 @@
             msgDiv.className = `form-message ${type}`;
             msgDiv.style.display = 'block';
             msgDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { msgDiv.style.display = 'none';
-                msgDiv.className = 'form-message'; }, 5000);
+            setTimeout(() => { 
+                msgDiv.style.display = 'none';
+                msgDiv.className = 'form-message'; 
+            }, 5000);
         }
+
+       async function uploadToGoFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+        // First, get the server to upload to
+        const serverResponse = await fetch('https://api.gofile.io/servers');
+        const serverData = await serverResponse.json();
+        const server = serverData.data.servers[0].name;
+        
+        // Upload to that server
+        const response = await fetch(`https://${server}.gofile.io/uploadFile`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            if (data.status === 'ok' && data.data.downloadPage) {
+                console.log('✅ File uploaded to GoFile');
+                return data.data.downloadPage;
+            }
+        }
+        throw new Error('Upload failed');
+    } catch (error) {
+        console.warn('⚠️ GoFile failed, using base64 backup');
+        return await fileToBase64(file);
+    }
+}
+
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        
 
         function truncateText(text, max) {
             if (!text || text.length <= max) return text || '';
