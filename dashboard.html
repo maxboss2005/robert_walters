@@ -510,12 +510,13 @@
                 </ul>
             </div>
             <div class="sidebar-section">
-                <h4>Actions</h4>
-                <ul>
-                    <li><a href="#" data-tab="add-job-tab"><i class="bi bi-plus-circle-fill"></i> Add New Job</a></li>
-                    <li><a href="#" data-tab="users-tab"><i class="bi bi-people-fill"></i> Users</a></li>
-                </ul>
-            </div>
+    <h4>Actions</h4>
+    <ul>
+        <li><a href="#" data-tab="add-job-tab"><i class="bi bi-plus-circle-fill"></i> Add New Job</a></li>
+        <li><a href="#" data-tab="users-tab"><i class="bi bi-people-fill"></i> Users</a></li>
+        <li><a href="#" data-tab="employer-requests-tab"><i class="bi bi-building-fill"></i> Employer Requests</a></li>
+    </ul>
+</div>
             <div class="sidebar-section">
                 <h4>Quick Links</h4>
                 <ul>
@@ -730,6 +731,40 @@
                     </table>
                 </div>
             </div>
+
+            <!-- ===== EMPLOYER REQUESTS TAB ===== -->
+<div class="tab-content" id="employer-requests-tab">
+    <div class="page-header">
+        <h2><i class="bi bi-building-fill"></i> Employer Requests</h2>
+        <p>View recruitment service requests from employers</p>
+    </div>
+    <div class="table-header">
+        <div class="table-search">
+            <i class="bi bi-search"></i>
+            <input type="text" id="employer-search" placeholder="Search requests...">
+        </div>
+        <span style="font-size:0.85rem;color:var(--gray-600);" id="employer-count">0 requests</span>
+    </div>
+    <div class="table-container">
+        <table id="employer-table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Industry</th>
+                    <th>Positions</th>
+                    <th>Urgent</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="employer-tbody">
+                <tr class="loading-row"><td colspan="8"><span class="spinner-sm"></span> Loading requests...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
         </main>
     </div>
 
@@ -741,6 +776,19 @@
             <form id="edit-job-form" class="dashboard-form" style="box-shadow:none;border:none;padding:0;"></form>
         </div>
     </div>
+
+    <!-- ===== VIEW EMPLOYER REQUEST MODAL ===== -->
+<div class="modal-overlay" id="view-employer-modal-overlay">
+    <div class="modal" style="max-width: 650px;">
+        <button class="modal-close" onclick="closeViewEmployerModal()"><i class="bi bi-x-lg"></i></button>
+        <h3 style="display:flex;align-items:center;gap:10px;"><i class="bi bi-building-fill" style="color:var(--gold);"></i> Employer Request Details</h3>
+        <div id="view-employer-content"></div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" id="reply-email-btn"><i class="bi bi-envelope-fill"></i> Reply via Email</button>
+            <button class="btn btn-outline" onclick="closeViewEmployerModal()"><i class="bi bi-x-circle"></i> Close</button>
+        </div>
+    </div>
+</div>
 
     <script>
         // ==================== FIREBASE CONFIG ====================
@@ -757,6 +805,7 @@
         let db = null;
         let auth = null;
         let firebaseReady = false;
+        
 
         try {
             firebase.initializeApp(firebaseConfig);
@@ -774,6 +823,7 @@
         let allJobsData = [];
         let allApplicationsData = [];
         let allUsersData = [];
+        let allEmployerRequests = [];
 
         // ==================== DOM READY ====================
         document.addEventListener('DOMContentLoaded', () => {
@@ -814,6 +864,7 @@
                 loadJobs(),
                 loadApplications(),
                 loadUsers(),
+                loadEmployerRequests(),
                 loadActivity()
             ]);
             updateStats();
@@ -948,6 +999,123 @@
             }
         }
 
+        async function loadEmployerRequests() {
+    const tbody = document.getElementById('employer-tbody');
+    if (!tbody) return;
+
+    try {
+        if (db) {
+            const snapshot = await db.collection('employer_requests').orderBy('createdAt', 'desc').get();
+            allEmployerRequests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        } else {
+            allEmployerRequests = [];
+        }
+        renderEmployerRequestsTable(allEmployerRequests);
+        document.getElementById('employer-count').textContent = `${allEmployerRequests.length} requests`;
+    } catch (error) {
+        console.error('Error loading employer requests:', error);
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--red);">❌ Error loading requests.</td></tr>';
+    }
+}
+
+function renderEmployerRequestsTable(requests, filter = '') {
+    const tbody = document.getElementById('employer-tbody');
+    if (!tbody) return;
+
+    const searchTerm = filter.toLowerCase();
+    const filtered = requests.filter(r =>
+        !searchTerm ||
+        r.companyName?.toLowerCase().includes(searchTerm) ||
+        r.contactPerson?.toLowerCase().includes(searchTerm) ||
+        r.email?.toLowerCase().includes(searchTerm)
+    );
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="bi bi-inbox"></i><p>No employer requests found</p></div></td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(req => {
+        const date = req.createdAt?.toDate?.() || new Date();
+        return `
+        <tr>
+            <td><strong>${req.companyName || 'N/A'}</strong></td>
+            <td>${req.contactPerson || 'N/A'}</td>
+            <td><a href="mailto:${req.email}" style="color:var(--gold-dark);">${req.email || 'N/A'}</a></td>
+            <td>${req.industry || 'N/A'}</td>
+            <td>${req.positionsCount || 'N/A'}</td>
+            <td>${req.urgent ? '<span class="status-badge" style="background:#f8d7da;color:#721c24;">⚠️ Urgent</span>' : '<span class="status-badge pending">Standard</span>'}</td>
+            <td style="font-size:0.85rem;">${date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</td>
+            <td>
+                <button class="btn btn-outline btn-sm" onclick="viewEmployerRequest('${req.id}')" title="View Details">
+                    <i class="bi bi-eye-fill"></i>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function viewEmployerRequest(requestId) {
+    const req = allEmployerRequests.find(r => r.id === requestId);
+    if (!req) return;
+    
+    const date = req.createdAt?.toDate?.() || new Date();
+    const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    
+    const content = document.getElementById('view-employer-content');
+    content.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Company</label>
+                <p style="font-weight:600;color:var(--navy);font-size:1.1rem;">${req.companyName || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Contact Person</label>
+                <p style="font-weight:600;color:var(--navy);font-size:1.1rem;">${req.contactPerson || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Email</label>
+                <p style="color:var(--gold-dark);"><i class="bi bi-envelope"></i> ${req.email || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Phone</label>
+                <p style="color:var(--navy);"><i class="bi bi-telephone"></i> ${req.phone || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Industry</label>
+                <p style="color:var(--navy);">${req.industry || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Positions Needed</label>
+                <p style="color:var(--navy);">${req.positionsCount || 'N/A'}</p>
+            </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <span style="font-size:0.8rem;color:var(--gray-600);"><i class="bi bi-calendar"></i> ${formattedDate} at ${formattedTime}</span>
+            ${req.urgent ? '<span class="status-badge" style="background:#f8d7da;color:#721c24;font-size:0.85rem;"><i class="bi bi-exclamation-triangle-fill"></i> Urgent Request</span>' : '<span class="status-badge pending" style="font-size:0.85rem;">Standard Request</span>'}
+        </div>
+        <div style="background:var(--gray-50);padding:16px;border-radius:var(--radius-sm);border-left:4px solid var(--gold);">
+            <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:8px;display:block;">Hiring Needs & Requirements</label>
+            <p style="color:var(--gray-800);line-height:1.7;">${req.hiringNeeds || 'No details provided.'}</p>
+        </div>
+    `;
+    
+    // Set up reply button
+    const replyBtn = document.getElementById('reply-email-btn');
+    replyBtn.onclick = () => {
+        const subject = encodeURIComponent(`Re: Recruitment Request - ${req.companyName}`);
+        const body = encodeURIComponent(`Dear ${req.contactPerson},\n\nThank you for reaching out to Robert Walter Recruitment Agency regarding your recruitment needs.\n\nWe have received your request and our team will review it shortly.\n\nBest regards,\nRobert Walter Recruitment Agency`);
+        window.open(`mailto:${req.email}?subject=${subject}&body=${body}`, '_blank');
+    };
+    
+    document.getElementById('view-employer-modal-overlay').classList.add('active');
+}
+
+function closeViewEmployerModal() {
+    document.getElementById('view-employer-modal-overlay').classList.remove('active');
+}
+
         function renderUsersTable(users) {
             const tbody = document.getElementById('users-tbody');
             if (!tbody) return;
@@ -1068,10 +1236,14 @@
 
         // ==================== EDIT JOB ====================
         function setupEditModal() {
-            document.getElementById('edit-modal-overlay')?.addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeEditModal();
-            });
-        }
+    document.getElementById('edit-modal-overlay')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeEditModal();
+    });
+    // Add this for the view modal too
+    document.getElementById('view-employer-modal-overlay')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeViewEmployerModal();
+    });
+}
 
         async function editJob(jobId) {
             try {
@@ -1181,6 +1353,7 @@
             if (tabName === 'jobs-tab') loadJobs();
             if (tabName === 'applications-tab') loadApplications();
             if (tabName === 'users-tab') loadUsers();
+            if (tabName === 'employer-requests-tab') loadEmployerRequests(); 
             if (tabName === 'overview') { loadAllData(); }
         }
 
@@ -1213,6 +1386,9 @@
             document.getElementById('jobs-search')?.addEventListener('input', (e) => {
                 renderJobsTable(allJobsData, e.target.value);
             });
+            document.getElementById('employer-search')?.addEventListener('input', (e) => {
+    renderEmployerRequestsTable(allEmployerRequests, e.target.value);
+});
             document.getElementById('apps-search')?.addEventListener('input', (e) => {
                 renderApplicationsTable(allApplicationsData, e.target.value);
             });
@@ -1251,7 +1427,8 @@
             setTimeout(() => { toast.remove(); }, 3500);
         }
 
-        // Make functions globally accessible
+        window.viewEmployerRequest = viewEmployerRequest;
+        window.closeViewEmployerModal = closeViewEmployerModal;
         window.editJob = editJob;
         window.deleteJob = deleteJob;
         window.closeEditModal = closeEditModal;
