@@ -790,6 +790,19 @@
     </div>
 </div>
 
+<!-- ===== VIEW APPLICATION MODAL ===== -->
+<div class="modal-overlay" id="view-app-modal-overlay">
+    <div class="modal" style="max-width: 650px;">
+        <button class="modal-close" onclick="closeViewAppModal()"><i class="bi bi-x-lg"></i></button>
+        <h3 style="display:flex;align-items:center;gap:10px;"><i class="bi bi-file-earmark-text-fill" style="color:var(--gold);"></i> Application Details</h3>
+        <div id="view-app-content"></div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" id="reply-app-btn"><i class="bi bi-envelope-fill"></i> Reply via Email</button>
+            <button class="btn btn-outline" onclick="closeViewAppModal()"><i class="bi bi-x-circle"></i> Close</button>
+        </div>
+    </div>
+</div>
+
     <script>
         // ==================== FIREBASE CONFIG ====================
         const firebaseConfig = {
@@ -950,36 +963,53 @@
         }
 
         function renderApplicationsTable(apps, filter = '') {
-            const tbody = document.getElementById('apps-tbody');
-            if (!tbody) return;
+    const tbody = document.getElementById('apps-tbody');
+    if (!tbody) return;
 
-            const searchTerm = filter.toLowerCase();
-            const filtered = apps.filter(a =>
-                !searchTerm ||
-                a.fullName?.toLowerCase().includes(searchTerm) ||
-                a.email?.toLowerCase().includes(searchTerm)
-            );
+    const searchTerm = filter.toLowerCase();
+    const filtered = apps.filter(a =>
+        !searchTerm ||
+        a.fullName?.toLowerCase().includes(searchTerm) ||
+        a.email?.toLowerCase().includes(searchTerm) ||
+        a.jobTitle?.toLowerCase().includes(searchTerm)
+    );
 
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-inbox"></i><p>No applications found</p></div></td></tr>`;
-                return;
-            }
+    if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-inbox"></i><p>No applications found</p></div></td></tr>`;
+        return;
+    }
 
-            tbody.innerHTML = filtered.map(app => {
-                const date = app.createdAt?.toDate?.() || new Date();
-                return `
-                <tr>
-                    <td><strong>${app.fullName || 'N/A'}</strong></td>
-                    <td>${app.email || 'N/A'}</td>
-                    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${app.jobId || ''}">${app.jobId?.substring(0,8) || 'N/A'}</td>
-                    <td>
-                        ${app.cvUrl ? `<a href="${app.cvUrl}" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-download"></i> Download</a>` : '<span style="color:var(--gray-600);">No CV</span>'}
-                    </td>
-                    <td style="font-size:0.85rem;">${date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</td>
-                    <td><span class="status-badge active">New</span></td>
-                </tr>`;
-            }).join('');
-        }
+    tbody.innerHTML = filtered.map(app => {
+        const date = app.createdAt?.toDate?.() || new Date();
+        // Try to find the job title from allJobsData
+        const job = allJobsData.find(j => j.id === app.jobId);
+        const jobTitle = job?.title || app.jobId?.substring(0, 8) || 'N/A';
+        
+        return `
+        <tr>
+            <td>
+                <strong>${app.fullName || 'N/A'}</strong>
+                ${app.linkedin ? `<br><a href="${app.linkedin}" target="_blank" style="font-size:0.75rem;color:var(--blue);"><i class="bi bi-linkedin"></i> LinkedIn</a>` : ''}
+            </td>
+            <td>
+                <a href="mailto:${app.email}" style="color:var(--gold-dark);">${app.email || 'N/A'}</a>
+                ${app.phone ? `<br><span style="font-size:0.8rem;color:var(--gray-600);"><i class="bi bi-telephone"></i> ${app.phone}</span>` : ''}
+            </td>
+            <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${jobTitle}">
+                <span style="font-size:0.85rem;">${jobTitle}</span>
+            </td>
+            <td>
+                ${app.cvUrl ? `<a href="${app.cvUrl}" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-download"></i> Download CV</a>` : '<span style="color:var(--gray-600);">No CV</span>'}
+            </td>
+            <td style="font-size:0.8rem;">${date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</td>
+            <td>
+                <button class="btn btn-outline btn-sm" onclick="viewApplication('${app.id}')" title="View Details">
+                    <i class="bi bi-eye-fill"></i>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
 
         async function loadUsers() {
             const tbody = document.getElementById('users-tbody');
@@ -1137,6 +1167,66 @@ function closeViewEmployerModal() {
             }).join('');
         }
 
+        function viewApplication(appId) {
+    const app = allApplicationsData.find(a => a.id === appId);
+    if (!app) return;
+    
+    const job = allJobsData.find(j => j.id === app.jobId);
+    const date = app.createdAt?.toDate?.() || new Date();
+    const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    
+    const content = document.getElementById('view-app-content');
+    content.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Applicant Name</label>
+                <p style="font-weight:600;color:var(--navy);font-size:1.1rem;">${app.fullName || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Position Applied</label>
+                <p style="font-weight:600;color:var(--navy);font-size:1rem;">${job?.title || app.jobId?.substring(0,8) || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Email</label>
+                <p style="color:var(--gold-dark);"><i class="bi bi-envelope"></i> ${app.email || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">Phone</label>
+                <p style="color:var(--navy);"><i class="bi bi-telephone"></i> ${app.phone || 'N/A'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">CV File</label>
+                <p>${app.cvUrl ? `<a href="${app.cvUrl}" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-download"></i> ${app.cvFileName || 'Download CV'}</a>` : '<span style="color:var(--gray-600);">No CV uploaded</span>'}</p>
+            </div>
+            <div style="background:var(--gray-50);padding:14px;border-radius:var(--radius-sm);">
+                <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);">LinkedIn</label>
+                <p>${app.linkedin ? `<a href="${app.linkedin}" target="_blank" style="color:var(--blue);"><i class="bi bi-linkedin"></i> View Profile</a>` : '<span style="color:var(--gray-600);">Not provided</span>'}</p>
+            </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <span style="font-size:0.8rem;color:var(--gray-600);"><i class="bi bi-calendar"></i> ${formattedDate}</span>
+        </div>
+        ${app.coverLetter ? `
+        <div style="background:var(--gray-50);padding:16px;border-radius:var(--radius-sm);border-left:4px solid var(--gold);margin-bottom:16px;">
+            <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:8px;display:block;">Cover Letter</label>
+            <p style="color:var(--gray-800);line-height:1.7;">${app.coverLetter}</p>
+        </div>` : ''}
+    `;
+    
+    const replyBtn = document.getElementById('reply-app-btn');
+    replyBtn.onclick = () => {
+        const subject = encodeURIComponent(`Re: Your Application - ${job?.title || 'Position'}`);
+        const body = encodeURIComponent(`Dear ${app.fullName},\n\nThank you for applying for the ${job?.title || 'position'} at ${job?.company || 'our company'}.\n\nWe have received your application and are currently reviewing it.\n\nBest regards,\nRobert Walter Recruitment Agency`);
+        window.open(`mailto:${app.email}?subject=${subject}&body=${body}`, '_blank');
+    };
+    
+    document.getElementById('view-app-modal-overlay').classList.add('active');
+}
+
+function closeViewAppModal() {
+    document.getElementById('view-app-modal-overlay').classList.remove('active');
+}
+
         async function loadActivity() {
             const activityList = document.getElementById('activity-list');
             if (!activityList) return;
@@ -1239,9 +1329,11 @@ function closeViewEmployerModal() {
     document.getElementById('edit-modal-overlay')?.addEventListener('click', (e) => {
         if (e.target === e.currentTarget) closeEditModal();
     });
-    // Add this for the view modal too
     document.getElementById('view-employer-modal-overlay')?.addEventListener('click', (e) => {
         if (e.target === e.currentTarget) closeViewEmployerModal();
+    });
+    document.getElementById('view-app-modal-overlay')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeViewAppModal();
     });
 }
 
@@ -1433,6 +1525,8 @@ function closeViewEmployerModal() {
         window.deleteJob = deleteJob;
         window.closeEditModal = closeEditModal;
         window.switchTab = switchTab;
+        window.viewApplication = viewApplication;
+        window.closeViewAppModal = closeViewAppModal;
     </script>
 </body>
 </html>
