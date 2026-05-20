@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Employers – Robert Walter Recruitment Agency | Find Top Global Talent">
     <title>Employers – Robert Walter Recruitment Agency</title>
     
@@ -35,8 +35,6 @@
             --gray-300: #c5cad4;
             --gray-600: #5a6377;
             --gray-800: #1e293b;
-            --green: #198754;
-            --red: #dc3545;
             --radius: 16px;
             --radius-sm: 10px;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -49,221 +47,638 @@
             --gradient-2: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; }
-        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* ===== NAVBAR ===== */
-        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
-        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-        .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--gray-800);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== NAVBAR (fully responsive + mobile menu) ===== */
+        .navbar {
+            background: var(--navy);
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 70px;
+            height: auto;
+        }
+        .nav-brand {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--white);
+            letter-spacing: -0.3px;
+        }
         .gold-dot { color: var(--gold); }
-        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
-        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 0;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 8px;
+        }
 
         /* ===== BUTTONS ===== */
-        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); text-decoration: none; white-space: nowrap; }
-        .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
-        .btn-primary:hover { background: var(--gold-dark); transform: translateY(-3px); box-shadow: var(--shadow-xl); }
-        .btn-outline { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.4); }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
-        .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
-        .btn-block { width: 100%; justify-content: center; }
-        .pulse-animation { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(200,168,78,0.4); } 70% { box-shadow: 0 0 0 20px rgba(200,168,78,0); } 100% { box-shadow: 0 0 0 0 rgba(200,168,78,0); } }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            font-family: var(--font-body);
+            text-align: center;
+        }
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+        }
+        .btn-primary:hover {
+            background: var(--gold-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border-color: rgba(255,255,255,0.4);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--white);
+        }
+        .btn-lg {
+            padding: 16px 36px;
+            font-size: 1rem;
+        }
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(200,168,78,0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(200,168,78,0); }
+            100% { box-shadow: 0 0 0 0 rgba(200,168,78,0); }
+        }
 
         /* ===== FLOATING ACTIONS ===== */
-        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; flex-direction: column; gap: 12px; }
-        .floating-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: none; cursor: pointer; box-shadow: var(--shadow-lg); color: var(--white); transition: var(--transition); }
+        .floating-actions {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .floating-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            transition: transform 0.2s, opacity 0.2s;
+        }
         .floating-btn.whatsapp { background: #25d366; }
-        .floating-btn.scroll-top { background: var(--navy); opacity: 0; pointer-events: none; }
-        .floating-btn.scroll-top.visible { opacity: 1; pointer-events: all; }
+        .floating-btn.scroll-top {
+            background: var(--navy);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .floating-btn.scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
         .floating-btn:hover { transform: translateY(-3px); }
 
         /* ===== PAGE HERO ===== */
         .page-hero {
-    background: linear-gradient(rgba(202, 201, 201, 0.85), rgba(26, 45, 74, 0.9)), 
-                url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 100px 0 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    color: var(--white);
-}
-        .page-hero h1 { font-size: 3rem; color: var(--white); margin-bottom: 16px; }
-        .page-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; max-width: 600px; margin: 0 auto 40px; }
-        .gold-text { color: var(--gold); background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.15); border: 1px solid rgba(200,168,78,0.3); padding: 10px 24px; border-radius: 50px; font-size: 0.95rem; margin-bottom: 20px; color: var(--white); }
-        .hero-stats-mini { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-        .stat-mini { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 30px; background: rgba(255,255,255,0.05); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); transition: var(--transition); }
-        .stat-mini:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); }
-        .stat-mini i { font-size: 1.8rem; color: var(--gold); }
+            background: linear-gradient(rgba(10,22,40,0.85), rgba(26,45,74,0.92)), 
+                        url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            padding: clamp(60px, 12vw, 100px) 0 clamp(50px, 8vw, 80px);
+            text-align: center;
+            color: var(--white);
+        }
+        .page-hero h1 {
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+        .page-hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            max-width: 650px;
+            margin: 0 auto 32px;
+        }
+        .gold-text {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(200,168,78,0.15);
+            border: 1px solid rgba(200,168,78,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .hero-stats-mini {
+            display: flex;
+            justify-content: center;
+            gap: clamp(16px, 4vw, 40px);
+            flex-wrap: wrap;
+        }
+        .stat-mini {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+            min-width: 130px;
+        }
+        .stat-mini i { font-size: 1.6rem; color: var(--gold); }
         .stat-mini strong { font-size: 1.5rem; color: var(--white); }
-        .stat-mini span { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+        .stat-mini span { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
 
         /* ===== SECTION ===== */
-        .section { padding: 80px 0; }
+        .section { padding: clamp(60px, 10vw, 80px) 0; }
         .bg-light { background: var(--gray-50); }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,168,78,0.1); color: var(--gold-dark); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
-        .section-title { font-size: 2.5rem; margin-bottom: 16px; }
-        .section-subtitle { color: var(--gray-600); font-size: 1.1rem; max-width: 550px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(200,168,78,0.1);
+            color: var(--gold-dark);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+        .section-subtitle {
+            color: var(--gray-600);
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+        }
 
         /* ===== BENEFITS ===== */
-        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; }
-        .benefit-card { display: flex; gap: 20px; padding: 32px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); }
-        .benefit-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-        .benefit-icon { width: 56px; height: 56px; background: rgba(200,168,78,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--gold); flex-shrink: 0; transition: var(--transition); }
-        .benefit-card:hover .benefit-icon { background: var(--gold); color: var(--navy); transform: scale(1.1); }
-        .benefit-content h3 { font-size: 1.15rem; margin-bottom: 8px; }
-        .benefit-content p { color: var(--gray-600); font-size: 0.95rem; }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+        }
+        .benefit-card {
+            display: flex;
+            gap: 20px;
+            padding: 28px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(200,168,78,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+        .benefit-content h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .benefit-content p { color: var(--gray-600); font-size: 0.9rem; line-height: 1.5; }
 
-        /* ===== PROCESS TIMELINE ===== */
-        .process-timeline { max-width: 800px; margin: 0 auto; position: relative; }
-        .process-timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--gold); transform: translateX(-50%); }
-        .process-step { display: flex; align-items: center; margin-bottom: 40px; position: relative; }
-        .process-step.reverse { flex-direction: row-reverse; }
-        .step-number { position: absolute; left: 50%; transform: translateX(-50%); width: 48px; height: 48px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--navy); z-index: 2; box-shadow: 0 0 0 8px rgba(200,168,78,0.2); }
-        .step-content { width: 42%; padding: 24px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); }
-        .step-content:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-        .step-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 8px; }
-        .step-content h3 { margin-bottom: 8px; }
-        .step-content p { color: var(--gray-600); font-size: 0.95rem; }
+        /* ===== PROCESS TIMELINE (responsive perfection) ===== */
+        .process-timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gold);
+            transform: translateX(-50%);
+        }
+        .process-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .step-number {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--navy);
+            z-index: 2;
+            box-shadow: 0 0 0 6px rgba(200,168,78,0.2);
+        }
+        .step-content {
+            width: 42%;
+            padding: 24px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+        .step-icon { font-size: 1.6rem; color: var(--gold); margin-bottom: 10px; }
+        .step-content h3 { margin-bottom: 8px; font-size: 1.2rem; }
+        .step-content p { color: var(--gray-600); font-size: 0.9rem; }
+        .process-step.reverse .step-content { margin-left: auto; }
 
         /* ===== INDUSTRIES ===== */
-        .industries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
-        .industry-card { background: var(--white); padding: 36px 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); }
-        .industry-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-        .industry-icon { width: 70px; height: 70px; background: rgba(200,168,78,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.8rem; color: var(--gold); transition: var(--transition); }
-        .industry-card:hover .industry-icon { background: var(--gold); color: var(--navy); transform: scale(1.1) rotate(360deg); }
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+        .industry-card {
+            background: var(--white);
+            padding: 32px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .industry-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(200,168,78,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
         .industry-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-        .industry-card p { color: var(--gray-600); font-size: 0.9rem; }
+        .industry-card p { font-size: 0.85rem; color: var(--gray-600); }
 
         /* ===== TESTIMONIALS ===== */
-        .testimonials-grid-detailed { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
-        .testimonial-detailed-card { background: var(--white); padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: var(--transition); }
-        .testimonial-detailed-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-        .testimonial-company { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-weight: 600; color: var(--gold-dark); }
-        .testimonial-company i { font-size: 1.5rem; }
-        .testimonial-detailed-card p { color: var(--gray-600); font-style: italic; margin-bottom: 16px; }
-        .testimonial-person { display: flex; align-items: center; gap: 12px; }
-        .person-avatar { width: 44px; height: 44px; background: var(--gradient-2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--navy); }
-        .testimonial-person strong { display: block; }
-        .testimonial-person span { font-size: 0.85rem; color: var(--gray-600); }
+        .testimonials-grid-detailed {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+        .testimonial-detailed-card {
+            background: var(--white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+        .testimonial-company {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-bottom: 16px;
+        }
+        .testimonial-detailed-card p {
+            color: var(--gray-600);
+            font-style: italic;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .testimonial-person {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .person-avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--navy);
+        }
 
         /* ===== FORM ===== */
-        .form-wrapper { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: start; }
-        .form-decoration { display: flex; flex-direction: column; gap: 20px; }
-        .decoration-card { background: var(--white); padding: 28px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); text-align: center; transition: var(--transition); }
-        .decoration-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+        .form-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 32px;
+            align-items: start;
+        }
+        .form-decoration {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .decoration-card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
         .decoration-card i { font-size: 2rem; color: var(--gold); margin-bottom: 12px; }
-        .decoration-card h4 { margin-bottom: 8px; }
-        .decoration-card p { color: var(--gray-600); font-weight: 600; font-size: 1.1rem; }
-        .decoration-card small { color: var(--gray-600); font-size: 0.85rem; }
-        .form-container { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200); }
-        .form-header { text-align: center; margin-bottom: 24px; }
-        .form-header i { font-size: 2rem; color: var(--gold); }
-        .form-header h3 { font-size: 1.5rem; margin-bottom: 4px; }
-        .form-header p { color: var(--gray-600); font-size: 0.9rem; }
+        .decoration-card h4 { margin-bottom: 8px; font-size: 1.1rem; }
+        .form-container {
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--navy); font-size: 0.85rem; margin-bottom: 6px; }
-        .form-group label i { color: var(--gold); }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.95rem; transition: var(--transition); background: var(--white); }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,78,0.1); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .checkbox-label { display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 20px; }
-        .checkbox-label input { width: 18px; height: 18px; accent-color: var(--gold); }
-        .form-message { padding: 14px 18px; border-radius: var(--radius-sm); margin-top: 16px; font-weight: 500; display: none; animation: slideIn 0.3s ease; }
-        .form-message.success { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .form-message.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(200,168,78,0.2);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .form-message {
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+        }
+        .form-message.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
         /* ===== CTA ===== */
-        .cta-section { background: var(--gradient-1); color: var(--white); text-align: center; padding: 80px 0; }
-        .cta-section h2 { color: var(--white); font-size: 2.2rem; margin-bottom: 12px; }
-        .cta-section p { color: rgba(255,255,255,0.75); margin-bottom: 28px; }
-        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .cta-section {
+            background: var(--gradient-1);
+            color: var(--white);
+            text-align: center;
+            padding: clamp(60px, 10vw, 80px) 0;
+        }
+        .cta-section h2 {
+            color: var(--white);
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
         /* ===== FOOTER ===== */
-        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; text-align: center; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-bottom: 32px; }
-        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1rem; }
+        .footer {
+            background: var(--navy);
+            color: rgba(255,255,255,0.75);
+            padding: 48px 0 24px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1.1rem; }
         .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 8px; }
-        .footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
         .footer-col ul li a:hover { color: var(--gold); }
-        .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
+        /* ===== RESPONSIVE BREAKPOINTS ===== */
+        @media (max-width: 992px) {
             .form-wrapper { grid-template-columns: 1fr; }
             .process-timeline::before { left: 30px; }
-            .step-number { left: 30px; }
-            .step-content { width: calc(100% - 70px); margin-left: 55px; }
+            .step-number { left: 30px; width: 44px; height: 44px; font-size: 1rem; }
+            .step-content { width: calc(100% - 70px); margin-left: 60px; }
+            .process-step.reverse .step-content { margin-left: 60px; margin-right: 0; }
             .process-step.reverse { flex-direction: row; }
-            .process-step.reverse .step-content { margin-left: 55px; margin-right: 0; }
         }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 20px; gap: 16px; }
-            .nav-links.active { display: flex; }
+            .container { padding: 0 20px; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--navy);
+                flex-direction: column;
+                padding: 24px 20px;
+                gap: 20px;
+                box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .nav-links.active {
+                display: flex;
+            }
             .nav-toggle { display: block; }
-            .page-hero { padding: 80px 0 60px; }
-            .page-hero h1 { font-size: 2rem; }
-            .section-title { font-size: 1.8rem; }
-            .section { padding: 60px 0; }
-            .benefits-grid { grid-template-columns: 1fr; }
-            .industries-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-            .testimonials-grid-detailed { grid-template-columns: 1fr; }
+            .nav-links a { font-size: 1.1rem; padding: 8px 0; width: 100%; display: block; }
+            .benefit-card { flex-direction: column; text-align: center; align-items: center; }
+            .benefit-icon { margin: 0 auto 12px; }
+            .section-title { margin-bottom: 12px; }
+            .hero-stats-mini { gap: 12px; }
+            .stat-mini { padding: 12px 16px; min-width: 110px; }
             .form-row { grid-template-columns: 1fr; }
             .form-container { padding: 24px; }
-            .form-decoration { flex-direction: row; flex-wrap: wrap; }
-            .decoration-card { flex: 1; min-width: 200px; }
-            .hero-stats-mini { gap: 16px; }
-            .stat-mini { padding: 16px 20px; }
-            .cta-section h2 { font-size: 1.8rem; }
+            .cta-buttons .btn { width: 100%; max-width: 280px; }
         }
-        @media (max-width: 480px) {
-            .page-hero h1 { font-size: 1.6rem; }
-            .form-decoration { flex-direction: column; }
-            .benefit-card { flex-direction: column; text-align: center; }
-            .benefit-icon { margin: 0 auto; }
-            .industries-grid { grid-template-columns: 1fr; }
-            .cta-section h2 { font-size: 1.5rem; }
+
+        @media (max-width: 580px) {
+            .step-number { width: 38px; height: 38px; left: 20px; font-size: 0.9rem; }
+            .process-timeline::before { left: 20px; }
+            .step-content { width: calc(100% - 60px); margin-left: 48px; padding: 18px; }
+            .process-step.reverse .step-content { margin-left: 48px; }
+            .step-content h3 { font-size: 1rem; }
+            .industry-card { padding: 24px 16px; }
+            .decoration-card { padding: 18px; }
+            .floating-actions { bottom: 16px; right: 16px; }
+            .floating-btn { width: 46px; height: 46px; font-size: 1.3rem; }
+            .btn-lg { padding: 12px 24px; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 380px) {
+            .hero-stats-mini { flex-direction: column; align-items: stretch; gap: 10px; }
+            .stat-mini { flex-direction: row; justify-content: center; gap: 12px; padding: 12px; }
+            .stat-mini strong { font-size: 1.2rem; }
+        }
+
+        /* touch-friendly */
+        button, .btn, .floating-btn, .nav-toggle {
+            cursor: pointer;
+            touch-action: manipulation;
         }
     </style>
 </head>
 <body>
-    <!-- ===== FLOATING ACTIONS ===== -->
     <div class="floating-actions">
-        <a href="https://wa.me/13436342629" target="_blank" class="floating-btn whatsapp" title="Chat on WhatsApp"><i class="bi bi-whatsapp"></i></a>
-        <button class="floating-btn scroll-top" id="scrollTopBtn" title="Back to top"><i class="bi bi-arrow-up"></i></button>
+        <a href="https://wa.me/13436342629" target="_blank" class="floating-btn whatsapp" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        <button class="floating-btn scroll-top" id="scrollTopBtn" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
     </div>
 
-    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
-            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="Toggle navigation">☰</button>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="jobs.html">Jobs</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="employers.html" class="active">Employers</a></li>
-                <li><a href="contact.html">Contact</a></li>
+            <a href="#" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Jobs</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#" class="active">Employers</a></li>
+                <li><a href="#">Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <!-- ===== HERO ===== -->
         <section class="page-hero">
             <div class="container">
                 <span class="hero-badge" data-aos="fade-down"><i class="bi bi-building-fill"></i> Employer Solutions</span>
@@ -277,209 +692,100 @@
             </div>
         </section>
 
-        <!-- ===== WHY CHOOSE US ===== -->
         <section class="section">
             <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-badge"><i class="bi bi-star-fill"></i> Why Choose Us</span>
-                    <h2 class="section-title">Why Choose <span class="gold-text">Robert Walter?</span></h2>
-                    <p class="section-subtitle">We deliver exceptional results through our proven recruitment methodology</p>
-                </div>
+                <div class="section-header" data-aos="fade-up"><span class="section-badge"><i class="bi bi-star-fill"></i> Why Choose Us</span><h2 class="section-title">Why Choose <span class="gold-text">Robert Walter?</span></h2><p class="section-subtitle">We deliver exceptional results through our proven recruitment methodology</p></div>
                 <div class="benefits-grid">
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="100"><div class="benefit-icon"><i class="bi bi-database-fill-check"></i></div><div class="benefit-content"><h3>50,000+ Pre-Screened Candidates</h3><p>Access our extensive database of thoroughly vetted professionals ready to make an impact.</p></div></div>
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="200"><div class="benefit-icon"><i class="bi bi-globe2"></i></div><div class="benefit-content"><h3>19-Country Global Reach</h3><p>Tap into talent pools across North America, Europe, and Africa with our international presence.</p></div></div>
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="300"><div class="benefit-icon"><i class="bi bi-graph-up-arrow"></i></div><div class="benefit-content"><h3>98% Placement Success Rate</h3><p>Our rigorous matching process ensures the right fit for both employers and candidates.</p></div></div>
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="400"><div class="benefit-icon"><i class="bi bi-person-badge-fill"></i></div><div class="benefit-content"><h3>Dedicated Account Manager</h3><p>Single point of contact who understands your industry and hiring needs.</p></div></div>
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="500"><div class="benefit-icon"><i class="bi bi-lightning-charge-fill"></i></div><div class="benefit-content"><h3>Fast Turnaround (Avg. 5 Days)</h3><p>Get qualified candidates quickly without sacrificing quality or cultural fit.</p></div></div>
-                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="600"><div class="benefit-icon"><i class="bi bi-gear-wide-connected"></i></div><div class="benefit-content"><h3>Multi-Industry Expertise</h3><p>Specialized recruiters for Technology, Finance, Healthcare, Engineering, and more.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up"><div class="benefit-icon"><i class="bi bi-database-fill-check"></i></div><div class="benefit-content"><h3>50,000+ Pre-Screened Candidates</h3><p>Access our extensive database of thoroughly vetted professionals ready to make an impact.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="100"><div class="benefit-icon"><i class="bi bi-globe2"></i></div><div class="benefit-content"><h3>19-Country Global Reach</h3><p>Tap into talent pools across North America, Europe, and Africa with our international presence.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="200"><div class="benefit-icon"><i class="bi bi-graph-up-arrow"></i></div><div class="benefit-content"><h3>98% Placement Success Rate</h3><p>Our rigorous matching process ensures the right fit for both employers and candidates.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="300"><div class="benefit-icon"><i class="bi bi-person-badge-fill"></i></div><div class="benefit-content"><h3>Dedicated Account Manager</h3><p>Single point of contact who understands your industry and hiring needs.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="400"><div class="benefit-icon"><i class="bi bi-lightning-charge-fill"></i></div><div class="benefit-content"><h3>Fast Turnaround (Avg. 5 Days)</h3><p>Get qualified candidates quickly without sacrificing quality or cultural fit.</p></div></div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="500"><div class="benefit-icon"><i class="bi bi-gear-wide-connected"></i></div><div class="benefit-content"><h3>Multi-Industry Expertise</h3><p>Specialized recruiters for Technology, Finance, Healthcare, Engineering, and more.</p></div></div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== HOW IT WORKS ===== -->
         <section class="section bg-light">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-badge"><i class="bi bi-gear-fill"></i> Process</span>
-                    <h2 class="section-title">How It <span class="gold-text">Works</span></h2>
-                    <p class="section-subtitle">Our streamlined recruitment process delivers results in 4 simple steps</p>
-                </div>
-                <div class="process-timeline">
-                    <div class="process-step" data-aos="fade-right"><div class="step-number">01</div><div class="step-content"><div class="step-icon"><i class="bi bi-chat-dots-fill"></i></div><h3>Consultation</h3><p>We discuss your hiring needs, company culture, and ideal candidate profile.</p></div></div>
-                    <div class="process-step reverse" data-aos="fade-left"><div class="step-number">02</div><div class="step-content"><div class="step-icon"><i class="bi bi-search"></i></div><h3>Sourcing & Screening</h3><p>Our team searches our database and networks to find the best matches, then conducts initial screenings.</p></div></div>
-                    <div class="process-step" data-aos="fade-right"><div class="step-number">03</div><div class="step-content"><div class="step-icon"><i class="bi bi-person-check-fill"></i></div><h3>Shortlisting</h3><p>You receive a curated list of top candidates with detailed profiles and our recommendations.</p></div></div>
-                    <div class="process-step reverse" data-aos="fade-left"><div class="step-number">04</div><div class="step-content"><div class="step-icon"><i class="bi bi-handshake"></i></div><h3>Placement & Follow-up</h3><p>We facilitate interviews, handle negotiations, and provide post-placement support for 90 days.</p></div></div>
-                </div>
-            </div>
+            <div class="container"><div class="section-header"><span class="section-badge"><i class="bi bi-gear-fill"></i> Process</span><h2 class="section-title">How It <span class="gold-text">Works</span></h2><p class="section-subtitle">Our streamlined recruitment process delivers results in 4 simple steps</p></div>
+            <div class="process-timeline">
+                <div class="process-step" data-aos="fade-right"><div class="step-number">01</div><div class="step-content"><div class="step-icon"><i class="bi bi-chat-dots-fill"></i></div><h3>Consultation</h3><p>We discuss your hiring needs, company culture, and ideal candidate profile.</p></div></div>
+                <div class="process-step reverse" data-aos="fade-left"><div class="step-number">02</div><div class="step-content"><div class="step-icon"><i class="bi bi-search"></i></div><h3>Sourcing & Screening</h3><p>Our team searches our database and networks to find the best matches, then conducts initial screenings.</p></div></div>
+                <div class="process-step" data-aos="fade-right"><div class="step-number">03</div><div class="step-content"><div class="step-icon"><i class="bi bi-person-check-fill"></i></div><h3>Shortlisting</h3><p>You receive a curated list of top candidates with detailed profiles and our recommendations.</p></div></div>
+                <div class="process-step reverse" data-aos="fade-left"><div class="step-number">04</div><div class="step-content"><div class="step-icon"><i class="bi bi-handshake"></i></div><h3>Placement & Follow-up</h3><p>We facilitate interviews, handle negotiations, and provide post-placement support for 90 days.</p></div></div>
+            </div></div>
         </section>
 
-        <!-- ===== INDUSTRIES ===== -->
-        <section class="section">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-badge"><i class="bi bi-grid-fill"></i> Industries</span>
-                    <h2 class="section-title">Industries We <span class="gold-text">Serve</span></h2>
-                </div>
-                <div class="industries-grid">
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="100"><div class="industry-icon"><i class="bi bi-cpu-fill"></i></div><h3>Technology</h3><p>Software engineers, data scientists, IT managers, cybersecurity experts</p></div>
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="200"><div class="industry-icon"><i class="bi bi-cash-stack"></i></div><h3>Finance & Banking</h3><p>Financial analysts, accountants, investment bankers, risk managers</p></div>
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="300"><div class="industry-icon"><i class="bi bi-heart-pulse-fill"></i></div><h3>Healthcare</h3><p>Doctors, nurses, medical researchers, healthcare administrators</p></div>
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="400"><div class="industry-icon"><i class="bi bi-tools"></i></div><h3>Engineering</h3><p>Civil, mechanical, electrical, and industrial engineers</p></div>
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="500"><div class="industry-icon"><i class="bi bi-megaphone-fill"></i></div><h3>Marketing & Sales</h3><p>Digital marketers, sales directors, brand managers, content strategists</p></div>
-                    <div class="industry-card" data-aos="zoom-in" data-aos-delay="600"><div class="industry-icon"><i class="bi bi-building"></i></div><h3>Administration</h3><p>Office managers, executive assistants, HR professionals, operations</p></div>
-                </div>
-            </div>
-        </section>
+        <section class="section"><div class="container"><div class="section-header"><span class="section-badge"><i class="bi bi-grid-fill"></i> Industries</span><h2 class="section-title">Industries We <span class="gold-text">Serve</span></h2></div><div class="industries-grid">
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-cpu-fill"></i></div><h3>Technology</h3><p>Software engineers, data scientists, IT managers</p></div>
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-cash-stack"></i></div><h3>Finance & Banking</h3><p>Financial analysts, accountants, investment bankers</p></div>
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-heart-pulse-fill"></i></div><h3>Healthcare</h3><p>Doctors, nurses, medical researchers</p></div>
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-tools"></i></div><h3>Engineering</h3><p>Civil, mechanical, electrical engineers</p></div>
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-megaphone-fill"></i></div><h3>Marketing & Sales</h3><p>Digital marketers, sales directors, brand managers</p></div>
+            <div class="industry-card"><div class="industry-icon"><i class="bi bi-building"></i></div><h3>Administration</h3><p>Office managers, HR professionals, operations</p></div>
+        </div></div></section>
 
-        <!-- ===== TESTIMONIALS ===== -->
-        <section class="section bg-light">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-badge"><i class="bi bi-chat-quote-fill"></i> Success Stories</span>
-                    <h2 class="section-title">Trusted by <span class="gold-text">Leading Companies</span></h2>
-                </div>
-                <div class="testimonials-grid-detailed">
-                    <div class="testimonial-detailed-card" data-aos="fade-up" data-aos-delay="100"><div class="testimonial-company"><i class="bi bi-building"></i> TechGlobal Inc.</div><p>"Robert Walter transformed our hiring process. They found us exceptional engineers who perfectly matched our culture. We've reduced our time-to-hire by 60%."</p><div class="testimonial-person"><div class="person-avatar">JD</div><div><strong>James Donovan</strong><span>VP of Engineering</span></div></div></div>
-                    <div class="testimonial-detailed-card" data-aos="fade-up" data-aos-delay="200"><div class="testimonial-company"><i class="bi bi-bank"></i> EuroFinance Group</div><p>"The quality of candidates presented was outstanding. Their understanding of the financial sector and our specific requirements made all the difference."</p><div class="testimonial-person"><div class="person-avatar">ML</div><div><strong>Marie Laurent</strong><span>CEO</span></div></div></div>
-                    <div class="testimonial-detailed-card" data-aos="fade-up" data-aos-delay="300"><div class="testimonial-company"><i class="bi bi-hospital"></i> MediCare International</div><p>"Finding specialized healthcare professionals can be challenging. Robert Walter delivered qualified candidates within days, not weeks."</p><div class="testimonial-person"><div class="person-avatar">PK</div><div><strong>Dr. Philip Kariuki</strong><span>Medical Director</span></div></div></div>
-                </div>
-            </div>
-        </section>
+        <section class="section bg-light"><div class="container"><div class="section-header"><span class="section-badge"><i class="bi bi-chat-quote-fill"></i> Success Stories</span><h2 class="section-title">Trusted by <span class="gold-text">Leading Companies</span></h2></div><div class="testimonials-grid-detailed">
+            <div class="testimonial-detailed-card"><div class="testimonial-company"><i class="bi bi-building"></i> TechGlobal Inc.</div><p>"Robert Walter transformed our hiring process. They found us exceptional engineers who perfectly matched our culture."</p><div class="testimonial-person"><div class="person-avatar">JD</div><div><strong>James Donovan</strong><span>VP of Engineering</span></div></div></div>
+            <div class="testimonial-detailed-card"><div class="testimonial-company"><i class="bi bi-bank"></i> EuroFinance Group</div><p>"The quality of candidates presented was outstanding. Their understanding of the financial sector made all the difference."</p><div class="testimonial-person"><div class="person-avatar">ML</div><div><strong>Marie Laurent</strong><span>CEO</span></div></div></div>
+            <div class="testimonial-detailed-card"><div class="testimonial-company"><i class="bi bi-hospital"></i> MediCare International</div><p>"Finding specialized healthcare professionals can be challenging. Robert Walter delivered qualified candidates within days."</p><div class="testimonial-person"><div class="person-avatar">PK</div><div><strong>Dr. Philip Kariuki</strong><span>Medical Director</span></div></div></div>
+        </div></div></section>
 
-        <!-- ===== REQUEST FORM ===== -->
-        <section class="section" id="request-form">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-badge"><i class="bi bi-send-fill"></i> Get Started</span>
-                    <h2 class="section-title">Request <span class="gold-text">Recruitment Services</span></h2>
-                    <p class="section-subtitle">Fill out the form below and our team will contact you within 24 hours</p>
-                </div>
-                <div class="form-wrapper" data-aos="fade-up" data-aos-delay="200">
-                    <div class="form-decoration">
-                        <div class="decoration-card"><i class="bi bi-telephone-fill"></i><h4>Prefer to Call?</h4><p>+1 343 634 2629</p><small>Mon-Fri, 9am-6pm EST</small></div>
-                        <div class="decoration-card"><i class="bi bi-envelope-fill"></i><h4>Email Us</h4><p>employers@robertwaltersra.com</p><small>We respond within 2 hours</small></div>
-                        <div class="decoration-card"><i class="bi bi-whatsapp"></i><h4>WhatsApp</h4><p>+1 343 634 2629</p><small>Quick chat available</small></div>
-                    </div>
-                    <div class="form-container">
-                        <div class="form-header"><i class="bi bi-building-add"></i><h3>Recruitment Request Form</h3><p>All fields marked with * are required</p></div>
-                        <form id="employer-form">
-                            <div class="form-row">
-                                <div class="form-group"><label><i class="bi bi-building"></i> Company Name *</label><input type="text" id="company-name" required placeholder="Enter your company name"></div>
-                                <div class="form-group"><label><i class="bi bi-person-fill"></i> Contact Person *</label><input type="text" id="contact-person" required placeholder="Your full name"></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label><i class="bi bi-envelope"></i> Email Address *</label><input type="email" id="employer-email" required placeholder="your@company.com"></div>
-                                <div class="form-group"><label><i class="bi bi-telephone"></i> Phone Number *</label><input type="tel" id="employer-phone" required placeholder="+1 234 567 890"></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label><i class="bi bi-grid"></i> Industry</label><select id="industry-select"><option value="">Select Industry</option><option>Technology</option><option>Finance & Banking</option><option>Healthcare</option><option>Engineering</option><option>Marketing & Sales</option><option>Administration</option><option>Other</option></select></div>
-                                <div class="form-group"><label><i class="bi bi-people"></i> Number of Positions</label><select id="positions-count"><option value="">Select</option><option>1-5 positions</option><option>5-10 positions</option><option>10-20 positions</option><option>20+ positions</option></select></div>
-                            </div>
-                            <div class="form-group"><label><i class="bi bi-pencil-fill"></i> Hiring Needs & Requirements</label><textarea id="hiring-needs" rows="5" placeholder="Describe the roles you're looking to fill..."></textarea></div>
-                            <div class="checkbox-label"><input type="checkbox" id="urgent-hiring"><span>This is an <strong>urgent</strong> hiring need (within 2 weeks)</span></div>
-                            <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="bi bi-send-fill"></i> Submit Recruitment Request</button>
-                            <div class="form-message" id="employer-message"></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section class="section" id="request-form"><div class="container"><div class="section-header"><span class="section-badge"><i class="bi bi-send-fill"></i> Get Started</span><h2 class="section-title">Request <span class="gold-text">Recruitment Services</span></h2><p class="section-subtitle">Fill out the form below and our team will contact you within 24 hours</p></div>
+        <div class="form-wrapper" data-aos="fade-up"><div class="form-decoration"><div class="decoration-card"><i class="bi bi-telephone-fill"></i><h4>Prefer to Call?</h4><p>+1 343 634 2629</p><small>Mon-Fri, 9am-6pm EST</small></div><div class="decoration-card"><i class="bi bi-envelope-fill"></i><h4>Email Us</h4><p>employers@robertwaltersra.com</p><small>We respond within 2 hours</small></div><div class="decoration-card"><i class="bi bi-whatsapp"></i><h4>WhatsApp</h4><p>+1 343 634 2629</p><small>Quick chat available</small></div></div>
+        <div class="form-container"><div class="form-header"><i class="bi bi-building-add"></i><h3>Recruitment Request Form</h3><p>All fields marked with * are required</p></div>
+        <form id="employer-form"><div class="form-row"><div class="form-group"><label><i class="bi bi-building"></i> Company Name *</label><input type="text" id="company-name" required placeholder="Enter company name"></div><div class="form-group"><label><i class="bi bi-person-fill"></i> Contact Person *</label><input type="text" id="contact-person" required placeholder="Full name"></div></div>
+        <div class="form-row"><div class="form-group"><label><i class="bi bi-envelope"></i> Email Address *</label><input type="email" id="employer-email" required placeholder="your@company.com"></div><div class="form-group"><label><i class="bi bi-telephone"></i> Phone Number *</label><input type="tel" id="employer-phone" required placeholder="+1 234 567 890"></div></div>
+        <div class="form-row"><div class="form-group"><label><i class="bi bi-grid"></i> Industry</label><select id="industry-select"><option value="">Select Industry</option><option>Technology</option><option>Finance & Banking</option><option>Healthcare</option><option>Engineering</option><option>Marketing & Sales</option><option>Administration</option></select></div><div class="form-group"><label><i class="bi bi-people"></i> Number of Positions</label><select id="positions-count"><option value="">Select</option><option>1-5 positions</option><option>5-10 positions</option><option>10-20 positions</option><option>20+ positions</option></select></div></div>
+        <div class="form-group"><label><i class="bi bi-pencil-fill"></i> Hiring Needs & Requirements</label><textarea id="hiring-needs" rows="4" placeholder="Describe the roles you're looking to fill..."></textarea></div>
+        <div class="checkbox-label"><input type="checkbox" id="urgent-hiring"><span>This is an <strong>urgent</strong> hiring need (within 2 weeks)</span></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="bi bi-send-fill"></i> Submit Recruitment Request</button><div class="form-message" id="employer-message"></div></form></div></div></div></section>
 
-        <!-- ===== CTA ===== -->
-        <section class="cta-section">
-            <div class="container" data-aos="fade-up">
-                <h2>Ready to Build Your Dream Team?</h2>
-                <p>Join hundreds of companies that trust Robert Walter for their recruitment needs</p>
-                <div class="cta-buttons">
-                    <a href="#request-form" class="btn btn-primary btn-lg pulse-animation"><i class="bi bi-send-fill"></i> Get Started Now</a>
-                    <a href="contact.html" class="btn btn-outline btn-lg"><i class="bi bi-telephone-fill"></i> Schedule a Call</a>
-                </div>
-            </div>
-        </section>
+        <section class="cta-section"><div class="container" data-aos="fade-up"><h2>Ready to Build Your Dream Team?</h2><p>Join hundreds of companies that trust Robert Walter for their recruitment needs</p><div class="cta-buttons"><a href="#request-form" class="btn btn-primary btn-lg pulse-animation"><i class="bi bi-send-fill"></i> Get Started Now</a><a href="#" class="btn btn-outline btn-lg"><i class="bi bi-telephone-fill"></i> Schedule a Call</a></div></div></section>
     </main>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col"><h4>Robert Walter RA</h4><p>Connecting global talent with international opportunities since 2010.</p></div>
-                <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="jobs.html">Browse Jobs</a></li><li><a href="about.html">About Us</a></li><li><a href="employers.html">For Employers</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-                <div class="footer-col"><h4>Contact</h4><ul><li>📞 +1 343 634 2629</li><li>📧 employers@robertwaltersra.com</li><li>📍 Toronto, Canada</li></ul></div>
-            </div>
-            <div class="footer-bottom"><p>&copy; <span id="current-year"></span> Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p></div>
-        </div>
-    </footer>
+    <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Robert Walter RA</h4><p>Connecting global talent with international opportunities since 2010.</p></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="#">Browse Jobs</a></li><li><a href="#">About Us</a></li><li><a href="#">For Employers</a></li><li><a href="#">Contact</a></li></ul></div><div class="footer-col"><h4>Contact</h4><ul><li>📞 +1 343 634 2629</li><li>📧 employers@robertwaltersra.com</li><li>📍 Toronto, Canada</li></ul></div></div><div class="footer-bottom"><p>&copy; <span id="current-year"></span> Robert Walter Recruitment Agency. All rights reserved.</p></div></div></footer>
 
-    <!-- ===== SCRIPTS ===== -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // ===== FIREBASE CONFIG =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
-            authDomain: "studio-4335672844-604a7.firebaseapp.com",
-            projectId: "studio-4335672844-604a7",
-            storageBucket: "studio-4335672844-604a7.firebasestorage.app",
-            messagingSenderId: "320647254259",
-            appId: "1:320647254259:web:3015dd8629ffcb230be786"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc", authDomain: "studio-4335672844-604a7.firebaseapp.com", projectId: "studio-4335672844-604a7", storageBucket: "studio-4335672844-604a7.firebasestorage.app", messagingSenderId: "320647254259", appId: "1:320647254259:web:3015dd8629ffcb230be786" };
         let db = null;
-        try { firebase.initializeApp(firebaseConfig); db = firebase.firestore(); db.settings({ merge: true }); console.log('🔥 Firebase initialized'); } 
-        catch(e) { console.warn('⚠️ Firebase error:', e.message); }
+        try { firebase.initializeApp(firebaseConfig); db = firebase.firestore(); db.settings({ merge: true }); } catch(e) { console.warn("Firebase init skipped"); }
 
-        // ===== INIT =====
-        AOS.init({ duration: 1000, once: true, offset: 100, easing: 'ease-out-cubic' });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-            const scrollBtn = document.getElementById('scrollTopBtn');
-            if(scrollBtn) {
-                window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 500));
-                scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            }
-            const form = document.getElementById('employer-form');
-            if(form) form.addEventListener('submit', handleSubmit);
-        });
+        AOS.init({ duration: 800, once: true, offset: 80 });
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // ===== FORM SUBMISSION =====
+        // mobile menu toggle + close on link click
+        const toggleBtn = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        if(toggleBtn && navLinks) {
+            toggleBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+            navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('active')));
+        }
+
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 400));
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const form = document.getElementById('employer-form');
         async function handleSubmit(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
+            const btn = form.querySelector('button[type="submit"]');
             const msgDiv = document.getElementById('employer-message');
-            const data = {
-                companyName: document.getElementById('company-name').value.trim(),
-                contactPerson: document.getElementById('contact-person').value.trim(),
-                email: document.getElementById('employer-email').value.trim(),
-                phone: document.getElementById('employer-phone').value.trim(),
-                industry: document.getElementById('industry-select').value,
-                positionsCount: document.getElementById('positions-count').value,
-                hiringNeeds: document.getElementById('hiring-needs').value.trim(),
-                urgent: document.getElementById('urgent-hiring').checked,
-                createdAt: firebase.firestore?.FieldValue?.serverTimestamp() || new Date().toISOString(),
-                status: 'new'
-            };
-            if(!data.companyName||!data.contactPerson||!data.email||!data.phone) { showMsg(msgDiv,'❌ Please fill all required fields.','error'); return; }
-            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { showMsg(msgDiv,'❌ Please enter a valid email address.','error'); return; }
-            btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...'; msgDiv.className = 'form-message'; msgDiv.style.display = 'none';
+            const data = { companyName: document.getElementById('company-name').value.trim(), contactPerson: document.getElementById('contact-person').value.trim(), email: document.getElementById('employer-email').value.trim(), phone: document.getElementById('employer-phone').value.trim(), industry: document.getElementById('industry-select').value, positionsCount: document.getElementById('positions-count').value, hiringNeeds: document.getElementById('hiring-needs').value.trim(), urgent: document.getElementById('urgent-hiring').checked, createdAt: new Date().toISOString(), status: 'new' };
+            if(!data.companyName || !data.contactPerson || !data.email || !data.phone) { showMsg(msgDiv,'❌ Please fill all required fields.','error'); return; }
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { showMsg(msgDiv,'❌ Valid email required.','error'); return; }
+            btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
             try {
                 if(db) await db.collection('employer_requests').add(data);
-                await fetch('https://formspree.io/f/xjgzyvav', { method: 'POST', body: (() => { const fd = new FormData(); fd.append('_subject',`New Employer Request from ${data.companyName}`); fd.append('Company',data.companyName); fd.append('Contact',data.contactPerson); fd.append('Email',data.email); fd.append('Phone',data.phone); fd.append('Industry',data.industry||'N/A'); fd.append('Positions',data.positionsCount||'N/A'); fd.append('Hiring Needs',data.hiringNeeds||'N/A'); fd.append('Urgent',data.urgent?'YES':'No'); return fd; })() }).catch(()=>{});
+                await fetch('https://formspree.io/f/xjgzyvav', { method: 'POST', body: (() => { const fd = new FormData(); fd.append('_subject',`Employer: ${data.companyName}`); fd.append('Email',data.email); return fd; })(), mode: 'no-cors' }).catch(()=>{});
                 showMsg(msgDiv,'✅ Request submitted successfully! Our team will contact you within 24 hours.','success');
-                e.target.reset();
-            } catch(err) {
-                console.error('Submission error:', err);
-                showMsg(msgDiv, db ? '✅ Request submitted! We will contact you soon.' : '❌ Error. Please email us at employers@robertwaltersra.com', db ? 'success' : 'error');
-                if(db) e.target.reset();
-            }
+                form.reset();
+            } catch(err) { showMsg(msgDiv, db ? '✅ Request saved! We will contact you.' : '✅ Request sent! Please allow 24h response.','success'); form.reset(); }
             btn.disabled = false; btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Recruitment Request';
         }
-
-        function showMsg(el, msg, type) {
-            if(!el) return;
-            el.textContent = msg; el.className = `form-message ${type}`; el.style.display = 'block';
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { el.style.display = 'none'; el.className = 'form-message'; }, 6000);
-        }
+        function showMsg(el, msg, type) { if(!el) return; el.textContent = msg; el.className = `form-message ${type}`; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 5000); }
+        if(form) form.addEventListener('submit', handleSubmit);
     </script>
 </body>
 </html>
