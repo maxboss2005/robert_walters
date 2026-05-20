@@ -80,7 +80,18 @@
         .btn-block { width: 100%; justify-content: center; }
 
         /* ===== PAGE HERO ===== */
-        .page-hero { background: var(--gradient-1); padding: 80px 0 60px; text-align: center; position: relative; overflow: hidden; }
+        .page-hero {
+    background: linear-gradient(rgba(202, 201, 201, 0.85), rgba(26, 45, 74, 0.9)), 
+                url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 100px 0 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: var(--white);
+}
         .page-hero h1 { font-size: 2.8rem; color: var(--white); margin-bottom: 12px; }
         .page-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; }
         .gold-text { color: var(--gold); background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -408,7 +419,7 @@
     <!-- ===== SCRIPTS ===== -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // ==================== FIREBASE CONFIG ====================
+        
         const firebaseConfig = {
                 apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
                 authDomain: "studio-4335672844-604a7.firebaseapp.com",
