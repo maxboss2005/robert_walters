@@ -1,0 +1,117 @@
+/* === responsive.css === */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 2.4rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .about-grid,
+    .employers-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .jobs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--navy);
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-toggle {
+        display: block;
+    }
+    .hero {
+        min-height: auto;
+        padding: 40px 0;
+    }
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+    .hero-stats {
+        gap: 20px;
+    }
+    .stat-number {
+        font-size: 1.8rem;
+    }
+    .section {
+        padding: 48px 0;
+    }
+    .section-title {
+        font-size: 1.6rem;
+    }
+    .filters-bar {
+        flex-direction: column;
+    }
+    .filter-input,
+    .filter-select {
+        min-width: 100%;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .form-container {
+        padding: 24px;
+    }
+    .countries-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .dashboard-sidebar {
+        width: 100%;
+    }
+    .dashboard-sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    .hero-stats {
+        gap: 12px;
+    }
+    .stat-number {
+        font-size: 1.4rem;
+    }
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    .container {
+        padding: 0 16px;
+    }
+    .auth-card {
+        padding: 24px;
+    }
+}
