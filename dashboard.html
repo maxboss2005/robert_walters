@@ -803,85 +803,209 @@
     </div>
 </div>
 
-    <script>
-        // ==================== FIREBASE CONFIG ====================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
-            authDomain: "studio-4335672844-604a7.firebaseapp.com",
-            projectId: "studio-4335672844-604a7",
-            storageBucket: "studio-4335672844-604a7.firebasestorage.app",
-            messagingSenderId: "320647254259",
-            appId: "1:320647254259:web:3015dd8629ffcb230be786"
-        };
+<script>
 
-        // Initialize Firebase
-        let db = null;
-        let auth = null;
-        let firebaseReady = false;
-        
+    // ==================== FIREBASE CONFIG ====================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
+        authDomain: "studio-4335672844-604a7.firebaseapp.com",
+        projectId: "studio-4335672844-604a7",
+        storageBucket: "studio-4335672844-604a7.firebasestorage.app",
+        messagingSenderId: "320647254259",
+        appId: "1:320647254259:web:3015dd8629ffcb230be786"
+    };
 
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            auth = firebase.auth();
-            db.settings({ merge: true });
-            firebaseReady = true;
-            console.log('🔥 Firebase initialized successfully');
-        } catch (error) {
-            console.error('❌ Firebase initialization error:', error.message);
+    // Initialize Firebase
+    let db = null;
+    let auth = null;
+
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        auth = firebase.auth();
+        db.settings({ merge: true });
+        console.log('🔥 Firebase initialized successfully');
+    } catch (error) {
+        console.error('❌ Firebase initialization error:', error.message);
+    }
+
+    // ==================== STATE ====================
+    let currentUser = null;
+    let allJobsData = [];
+    let allApplicationsData = [];
+    let allUsersData = [];
+    let allEmployerRequests = [];
+    let authChecked = false;
+
+    // ==================== AUTH CHECK ====================
+    function initAuth() {
+        if (!auth) {
+            // Auth not configured - allow access (fallback)
+            console.log('⚠️ Auth not available - running in demo mode');
+            document.getElementById('user-display-name').textContent = 'Admin (Demo)';
+            document.getElementById('user-avatar-initials').textContent = 'A';
+            loadAllData();
+            setupAllUI();
+            return;
         }
 
-        // ==================== STATE ====================
-        let currentUser = null;
-        let allJobsData = [];
-        let allApplicationsData = [];
-        let allUsersData = [];
-        let allEmployerRequests = [];
+        auth.onAuthStateChanged(async (user) => {
+            if (authChecked) return; // Prevent multiple triggers
+            authChecked = true;
 
-        // ==================== DOM READY ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check auth state
-            if (auth) {
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        currentUser = user;
-                        document.getElementById('user-display-name').textContent = user.email;
-                        document.getElementById('user-avatar-initials').textContent = 
-                            (user.email?.charAt(0) || 'A').toUpperCase();
-                        loadAllData();
-                    } else {
-                        // For demo purposes, allow access without auth
-                        console.log('⚠️ No user signed in – running in demo mode');
-                        document.getElementById('user-display-name').textContent = 'admin@robertwaltersra.com';
-                        document.getElementById('user-avatar-initials').textContent = 'A';
-                        loadAllData();
-                    }
-                });
+            if (user) {
+                const isAdmin = await checkIfAdmin(user);
+                if (isAdmin) {
+                    currentUser = user;
+                    document.getElementById('user-display-name').textContent = user.email;
+                    document.getElementById('user-avatar-initials').textContent = (user.email?.charAt(0) || 'A').toUpperCase();
+                    loadAllData();
+                    setupAllUI();
+                } else {
+                    showAccessDenied('You do not have admin privileges.');
+                }
             } else {
-                loadAllData();
+                showLoginPage();
             }
-
-            // Setup UI
-            setupTabs();
-            setupSidebarToggle();
-            setupLogout();
-            setupAddJobForm();
-            setupEditModal();
-            setupTableSearch();
-            populateCountryDropdowns();
         });
+    }
 
-        // ==================== LOAD ALL DATA ====================
-        async function loadAllData() {
-            await Promise.all([
-                loadJobs(),
-                loadApplications(),
-                loadUsers(),
-                loadEmployerRequests(),
-                loadActivity()
-            ]);
-            updateStats();
+    // Start auth check
+    initAuth();
+
+    // ==================== CHECK IF USER IS ADMIN ====================
+    async function checkIfAdmin(user) {
+        try {
+            const adminEmails = [
+                'admin@robertwaltersra.com',
+                'info@robertwaltersra.com',
+                'employers@robertwaltersra.com'
+            ];
+            if (adminEmails.includes(user.email)) return true;
+            
+            if (db) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().role === 'admin') return true;
+            }
+            return false;
+        } catch (error) {
+            const adminEmails = ['admin@robertwaltersra.com'];
+            return adminEmails.includes(user.email);
         }
+    }
+
+    // ==================== SHOW LOGIN PAGE ====================
+    function showLoginPage() {
+        document.body.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0a1628,#1a2d4a);font-family:'Inter',sans-serif;padding:20px;">
+            <div style="background:white;padding:40px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                <div style="text-align:center;margin-bottom:24px;">
+                    <i class="bi bi-shield-lock-fill" style="font-size:3rem;color:#c8a84e;"></i>
+                    <h2 style="color:#0a1628;margin:16px 0 4px;font-family:'Poppins',sans-serif;">Admin Login</h2>
+                    <p style="color:#666;font-size:0.9rem;">Robert Walter Recruitment Agency</p>
+                </div>
+                <form id="login-form" onsubmit="return false;">
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-weight:600;color:#0a1628;margin-bottom:6px;font-size:0.85rem;">
+                            <i class="bi bi-envelope-fill"></i> Email Address
+                        </label>
+                        <input type="email" id="login-email" required 
+                               style="width:100%;padding:12px 16px;border:2px solid #e2e6ed;border-radius:8px;font-size:0.95rem;font-family:'Inter',sans-serif;"
+                               placeholder="admin@robertwaltersra.com">
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:block;font-weight:600;color:#0a1628;margin-bottom:6px;font-size:0.85rem;">
+                            <i class="bi bi-key-fill"></i> Password
+                        </label>
+                        <input type="password" id="login-password" required 
+                               style="width:100%;padding:12px 16px;border:2px solid #e2e6ed;border-radius:8px;font-size:0.95rem;font-family:'Inter',sans-serif;"
+                               placeholder="Enter password">
+                    </div>
+                    <button type="submit" id="login-btn" 
+                            style="width:100%;padding:14px;background:#c8a84e;color:#0a1628;border:none;border-radius:50px;font-weight:600;cursor:pointer;font-size:1rem;font-family:'Inter',sans-serif;transition:all 0.3s;">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </button>
+                    <p id="login-error" style="color:#dc3545;margin-top:12px;font-size:0.85rem;text-align:center;"></p>
+                </form>
+            </div>
+        </div>`;
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Signing in...';
+            errorEl.textContent = '';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                authChecked = false; // Reset to allow re-check
+                // Page will reload via onAuthStateChanged
+            } catch (error) {
+                let message = 'Login failed.';
+                if (error.code === 'auth/user-not-found') message = 'No account found.';
+                if (error.code === 'auth/wrong-password') message = 'Incorrect password.';
+                if (error.code === 'auth/invalid-credential') message = 'Invalid email or password.';
+                errorEl.textContent = '❌ ' + message;
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Login';
+            }
+        });
+    }
+
+    // ==================== SHOW ACCESS DENIED ====================
+    function showAccessDenied(message) {
+        document.body.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0a1628;color:white;text-align:center;font-family:'Inter',sans-serif;padding:20px;">
+            <div>
+                <i class="bi bi-shield-exclamation" style="font-size:5rem;color:#dc3545;display:block;margin-bottom:16px;"></i>
+                <h1 style="font-family:'Poppins',sans-serif;margin-bottom:8px;">Access Denied</h1>
+                <p style="color:#ccc;margin-bottom:24px;">${message}</p>
+                <button onclick="handleSignOut()" 
+                        style="padding:14px 32px;background:#c8a84e;color:#0a1628;border:none;border-radius:50px;cursor:pointer;font-weight:600;font-size:1rem;">
+                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                </button>
+            </div>
+        </div>`;
+    }
+
+    window.handleSignOut = function() {
+        if (auth) {
+            auth.signOut().then(() => {
+                sessionStorage.clear();
+                authChecked = false;
+                location.reload();
+            });
+        }
+    };
+
+    // ==================== SETUP ALL UI ====================
+    function setupAllUI() {
+        setupTabs();
+        setupSidebarToggle();
+        setupLogout();
+        setupAddJobForm();
+        setupEditModal();
+        setupTableSearch();
+        populateCountryDropdowns();
+    }
+
+    // ==================== LOAD ALL DATA ====================
+    async function loadAllData() {
+        await Promise.all([
+            loadJobs(),
+            loadApplications(),
+            loadUsers(),
+            loadEmployerRequests(),
+            loadActivity()
+        ]);
+        updateStats();
+    }
+
 
         async function loadJobs() {
             const tbody = document.getElementById('jobs-tbody');
@@ -1464,15 +1588,16 @@ function closeViewAppModal() {
         }
 
         function setupLogout() {
-            document.getElementById('logout-btn')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (auth) {
-                    auth.signOut().then(() => window.location.href = 'login.html');
-                } else {
-                    window.location.href = 'login.html';
-                }
+    document.getElementById('logout-btn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (auth) {
+            auth.signOut().then(() => {
+                sessionStorage.clear();
+                location.reload();
             });
         }
+    });
+}
 
         function setupTableSearch() {
             document.getElementById('jobs-search')?.addEventListener('input', (e) => {
