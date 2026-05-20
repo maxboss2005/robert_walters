@@ -1,1 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin – Robert Walter Recruitment Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-medium: #1a2d4a;
+            --gold: #c8a84e;
+            --gold-dark: #a88a35;
+            --white: #ffffff;
+            --gray-200: #e2e6ed;
+            --red: #dc3545;
+            --green: #198754;
+            --radius: 16px;
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: var(--font-body); 
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-medium) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .admin-card {
+            background: var(--white);
+            padding: 48px 40px;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 460px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .admin-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .admin-logo span { color: var(--gold); }
+
+        .admin-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(200,168,78,0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .admin-header h2 {
+            font-family: var(--font-heading);
+            color: var(--navy);
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .admin-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .form-group label i {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: #f8f9fb;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+            background: var(--white);
+        }
+
+        .btn-create {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-create:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(200,168,78,0.3);
+        }
+
+        .btn-create:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-top: 16px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+
+        .admin-list {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .admin-list h4 {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #f8f9fb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .admin-item .email {
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .admin-item .role {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .role-badge.admin {
+            background: rgba(200,168,78,0.15);
+            color: var(--gold-dark);
+        }
+
+        .role-badge.user {
+            background: #e2e6ed;
+            color: #666;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .password-hint {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.78rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-card">
+        <div class="admin-header">
+            <div class="admin-icon">
+                <i class="bi bi-shield-plus"></i>
+            </div>
+            <div class="admin-logo">Robert<span>Walter</span></div>
+            <h2>Create Admin Account</h2>
+            <p>Set up an administrator for the recruitment platform</p>
+        </div>
+
+        <form id="admin-form" onsubmit="return false;">
+            <div class="form-group">
+                <label><i class="bi bi-envelope-fill"></i> Email Address</label>
+                <input type="email" id="email" required placeholder="admin@robertwaltersra.com" autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-key-fill"></i> Password</label>
+                <input type="password" id="password" required placeholder="Min 6 characters" minlength="6" autocomplete="new-password">
+                <p class="password-hint">Password must be at least 6 characters long</p>
+            </div>
+            <button type="submit" class="btn-create" id="create-btn">
+                <i class="bi bi-person-plus-fill"></i> Create Admin
+            </button>
+            <div class="message" id="msg"></div>
+        </form>
+
+        <div class="admin-list" id="admin-list" style="display:none;">
+            <h4><i class="bi bi-people-fill"></i> Existing Admin Accounts</h4>
+            <div id="admin-items"></div>
+        </div>
+
+        <p class="footer-note">
+            <i class="bi bi-shield-lock-fill"></i> This page is for authorized personnel only
+        </p>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNqL34xZr2XcMWl_rLQ5SMsMBd5CaJJYc",
+            authDomain: "studio-4335672844-604a7.firebaseapp.com",
+            projectId: "studio-4335672844-604a7",
+            storageBucket: "studio-4335672844-604a7.firebasestorage.app",
+            messagingSenderId: "320647254259",
+            appId: "1:320647254259:web:3015dd8629ffcb230be786"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Load existing admins
+        loadExistingAdmins();
+
+        document.getElementById('admin-form').addEventListener('submit', createAdmin);
+
+        async function createAdmin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('create-btn');
+            const msg = document.getElementById('msg');
+
+            // Reset message
+            msg.className = 'message';
+            msg.style.display = 'none';
+
+            // Validation
+            if (!email || !password) {
+                showMessage('❌ Please fill in both email and password.', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('❌ Password must be at least 6 characters.', 'error');
+                return;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                showMessage('❌ Please enter a valid email address.', 'error');
+                return;
+            }
+
+            // Disable button
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Creating...';
+
+            try {
+                // Create auth user
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Save admin role to Firestore
+                await db.collection('users').doc(cred.user.uid).set({
+                    email: email,
+                    role: 'admin',
+                    name: email.split('@')[0],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showMessage(`✅ Admin created successfully!<br><small>Email: ${email}</small>`, 'success');
+                
+                // Clear form
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+                // Reload admin list
+                loadExistingAdmins();
+                
+                // Sign out the newly created user
+                await auth.signOut();
+                
+                console.log('✅ Admin created. UID:', cred.user.uid);
+                console.log('📧 Email:', email);
+            } catch (error) {
+                let message = error.message;
+                
+                // User-friendly error messages
+                if (error.code === 'auth/email-already-in-use') {
+                    message = 'This email is already registered. Try logging in instead.';
+                } else if (error.code === 'auth/weak-password') {
+                    message = 'Password is too weak. Please use at least 6 characters.';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Please enter a valid email address.';
+                }
+                
+                showMessage('❌ ' + message, 'error');
+            }
+
+            // Re-enable button
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-person-plus-fill"></i> Create Admin';
+        }
+
+        async function loadExistingAdmins() {
+            try {
+                const snapshot = await db.collection('users')
+                    .where('role', '==', 'admin')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                const adminList = document.getElementById('admin-list');
+                const adminItems = document.getElementById('admin-items');
+
+                if (snapshot.empty) {
+                    adminList.style.display = 'none';
+                    return;
+                }
+
+                adminList.style.display = 'block';
+                adminItems.innerHTML = snapshot.docs.map(doc => {
+                    const user = doc.data();
+                    const date = user.createdAt?.toDate?.() || new Date();
+                    const formattedDate = date.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                    });
+                    return `
+                        <div class="admin-item">
+                            <span class="email">
+                                <i class="bi bi-person-circle"></i> ${user.email || 'N/A'}
+                            </span>
+                            <span class="role role-badge admin">Admin</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading admins:', error);
+            }
+        }
+
+        function showMessage(message, type) {
+            const msg = document.getElementById('msg');
+            msg.innerHTML = message;
+            msg.className = `message show ${type}`;
+            msg.style.display = 'block';
+            msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                    msg.className = 'message';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
