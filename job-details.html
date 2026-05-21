@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Job Details – Robert Walter Recruitment Agency">
     <title>Job Details – Robert Walter Recruitment Agency</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" sizes="32x32" href="rw logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="rw logo.png">
+    <link rel="shortcut icon" href="rw logo.png" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="rw logo.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="assets/css/footer.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     
@@ -52,17 +58,18 @@
         html { scroll-behavior: smooth; font-size: 16px; }
         body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
+        a{ text-decoration: none;}
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
         /* Navbar */
-        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .navbar { background: white; color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
         .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
         .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
         .gold-dot { color: var(--gold); }
         .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a { color: rgba(88, 87, 87, 0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
         .nav-links a:hover { color: var(--gold); }
-        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+        .nav-toggle { display: none; background: none; border: none; color: black; font-size: 1.6rem; cursor: pointer; }
 
         /* Buttons */
         .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); text-decoration: none; }
@@ -152,8 +159,15 @@
         .cta-section h2 { color: var(--white); margin-bottom: 12px; }
         .cta-section p { color: rgba(255,255,255,0.75); margin-bottom: 24px; }
 
-        /* Footer */
-        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; text-align: center; }
+        /* ===== FOOTER ===== */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 48px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-bottom: 32px; }
+        .footer-col h4 { color: var(--white); margin-bottom: 16px; font-size: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
 
         /* Empty State */
         .empty-state { text-align: center; padding: 60px 20px; }
@@ -171,14 +185,50 @@
             .job-detail-main { order: 1; padding: 24px; }
             .detail-header h1 { font-size: 1.5rem; }
         }
+
+        /* Logo styling */
+.nav-logo {
+    height: 45px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+    border-radius: 1px;
+    transition: var(--transition);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+/* Responsive logo */
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 38px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo {
+        height: 32px;
+        max-width: 130px;
+    }
+    .nav-links a { color: rgba(255, 255, 255, 0.85)}
+}
     </style>
 </head>
 <body>
+    
 
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <a href="index.html" class="nav-brand">
+    <img src="rw logo.jpg" alt="Robert Walter Recruitment Agency Logo" class="nav-logo">
+</a>
             <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -243,15 +293,73 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p>
+     <!-- ===== FOOTER ===== -->
+   <footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-col">
+                <h4>Robert Walter RA</h4>
+                <p>Connecting global talent with international opportunities since 2010.</p>
+                <div class="trust-badges">
+                    <i class="bi bi-award-fill" style="color: var(--gold); font-size: 2rem;"></i>
+                    <i class="bi bi-shield-check" style="color: var(--gold); font-size: 2rem;"></i>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="jobs.html"> Browse Jobs</a></li>
+                    <li><a href="about.html"> About Us</a></li>
+                    <li><a href="employers.html"> For Employers</a></li>
+                    <li><a href="contact.html"> Contact</a></li>
+                    <li><a href="#"> Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="bi bi-telephone-fill"></i> +1 343 634 2629</li>
+                    <li><i class="bi bi-envelope-fill"></i>robertwalterscanada266@gmail.com</li>
+                    <li><i class="bi bi-geo-alt-fill"></i> Toronto, Canada</li>
+                    <li><i class="bi bi-clock-fill"></i> Mon-Fri: 9am - 6pm EST</li>
+                </ul>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="footer-col newsletter">
+                <h4>Stay Updated</h4>
+                <p>Get the latest job opportunities and industry news</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" aria-label="Subscribe"><i class="bi bi-send-fill"></i></button>
+                </form>
+                <div class="social-links">
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
         </div>
-    </footer>
+        
+        <div class="footer-bottom">
+            <p>
+                &copy; <span id="current-year"></span> Robert Walter Recruitment Agency. 
+                All rights reserved. | <a href="#">Privacy Policy</a> | 
+                <a href="#">Terms of Service</a> | <a href="#">Cookie Policy</a>
+            </p>
+        </div>
+    </div>
+</footer>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/newsletter.js"></script>
     <script>
         // ==================== FIREBASE CONFIG ====================
         // SAME CONFIG AS JOBS PAGE AND ADMIN DASHBOARD
