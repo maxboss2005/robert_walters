@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Employers – Robert Walter Recruitment Agency | Find Top Global Talent">
     <title>Employers – Robert Walter Recruitment Agency</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" sizes="32x32" href="rw logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="rw logo.png">
+    <link rel="shortcut icon" href="rw logo.png" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="rw logo.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,26 +56,62 @@
         }
 
         html, body {
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: var(--font-body); background: var(--white); color: var(--gray-800); line-height: 1.7; overflow-x: hidden; }
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    height: auto;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html { 
+    font-size: 16px; 
+}
+
+body { 
+    font-family: var(--font-body); 
+    background: var(--white); 
+    color: var(--gray-800); 
+    line-height: 1.7; 
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
         h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; color: var(--navy); }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
         /* ===== NAVBAR ===== */
-        .navbar { background: var(--navy); color: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
-        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+.navbar { 
+    background: white; 
+    color: var(--white); 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+
+.navbar .container { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    height: 70px; 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
         .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; }
         .gold-dot { color: var(--gold); }
         .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-        .nav-links a { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+        .nav-links a { color: rgba(88, 87, 87, 0.85); font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
         .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-        .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.6rem; cursor: pointer; }
+        .nav-toggle { display: none; background: none; border: none; color: black; font-size: 1.6rem; cursor: pointer; }
 
         /* ===== BUTTONS ===== */
         .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid transparent; transition: var(--transition); font-family: var(--font-body); text-decoration: none; white-space: nowrap; }
@@ -244,6 +286,230 @@
             .industries-grid { grid-template-columns: 1fr; }
             .cta-section h2 { font-size: 1.5rem; }
         }
+
+        .footer {
+    background: linear-gradient(135deg, #0a1628 0%, #0d1f35 100%);
+    padding: 60px 0 30px;
+    text-align: left;
+    border-top: 3px solid var(--gold);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-col h4 {
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-col ul li a:hover {
+    color: var(--gold);
+    transform: translateX(5px);
+}
+
+.footer-col ul li i {
+    color: var(--gold);
+    width: 24px;
+    font-size: 1rem;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.social-links a:hover {
+    background: var(--gold);
+    color: var(--navy);
+    transform: translateY(-3px);
+}
+
+/* Newsletter Form */
+.newsletter-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    border-radius: 50px;
+    color: var(--white);
+    font-family: var(--font-body);
+}
+
+.newsletter-form input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.newsletter-form button {
+    background: var(--gold);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--navy);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.newsletter-form button:hover {
+    transform: scale(1.05);
+    background: var(--gold-light);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.85rem;
+}
+
+.footer-bottom p {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-bottom a {
+    color: rgba(255,255,255,0.7);
+    transition: var(--transition);
+}
+
+.footer-bottom a:hover {
+    color: var(--gold);
+}
+
+/* Payment/Accreditation Badges */
+.trust-badges {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.trust-badges img {
+    height: 30px;
+    opacity: 0.7;
+    transition: var(--transition);
+}
+
+.trust-badges img:hover {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .footer-col h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-col ul li a {
+        justify-content: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .newsletter-form {
+        max-width: 300px;
+        margin: 15px auto 0;
+    }
+}
+
+/* Logo styling */
+.nav-logo {
+    height: 45px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+    border-radius: 1px;
+    transition: var(--transition);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+/* Responsive logo */
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 38px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo {
+        height: 32px;
+        max-width: 130px;
+    }
+    .nav-links a { color: rgba(255, 255, 255, 0.85)}
+}
     </style>
 </head>
 <body>
@@ -256,7 +522,9 @@
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="nav-brand">Robert<span class="gold-dot">Walter</span></a>
+            <a href="index.html" class="nav-brand">
+    <img src="rw logo.jpg" alt="Robert Walter Recruitment Agency Logo" class="nav-logo">
+</a>
             <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -405,19 +673,172 @@
     </main>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col"><h4>Robert Walter RA</h4><p>Connecting global talent with international opportunities since 2010.</p></div>
-                <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="jobs.html">Browse Jobs</a></li><li><a href="about.html">About Us</a></li><li><a href="employers.html">For Employers</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-                <div class="footer-col"><h4>Contact</h4><ul><li>📞 +1 343 634 2629</li><li>📧 employers@robertwaltersra.com</li><li>📍 Toronto, Canada</li></ul></div>
+   <footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-col">
+                <h4>Robert Walter RA</h4>
+                <p>Connecting global talent with international opportunities since 2010.</p>
+                <div class="trust-badges">
+                    <i class="bi bi-award-fill" style="color: var(--gold); font-size: 2rem;"></i>
+                    <i class="bi bi-shield-check" style="color: var(--gold); font-size: 2rem;"></i>
+                </div>
             </div>
-            <div class="footer-bottom"><p>&copy; <span id="current-year"></span> Robert Walter Recruitment Agency. All rights reserved. | robertwaltersra.com</p></div>
+            
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="jobs.html"> Browse Jobs</a></li>
+                    <li><a href="about.html"> About Us</a></li>
+                    <li><a href="employers.html"> For Employers</a></li>
+                    <li><a href="contact.html"> Contact</a></li>
+                    <li><a href="#"> Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="bi bi-telephone-fill"></i> +1 343 634 2629</li>
+                    <li><i class="bi bi-envelope-fill"></i>robertwalterscanada266@gmail.com</li>
+                    <li><i class="bi bi-geo-alt-fill"></i> Toronto, Canada</li>
+                    <li><i class="bi bi-clock-fill"></i> Mon-Fri: 9am - 6pm EST</li>
+                </ul>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="footer-col newsletter">
+                <h4>Stay Updated</h4>
+                <p>Get the latest job opportunities and industry news</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" aria-label="Subscribe"><i class="bi bi-send-fill"></i></button>
+                </form>
+                <div class="social-links">
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
         </div>
-    </footer>
+        
+        <div class="footer-bottom">
+            <p>
+                &copy; <span id="current-year"></span> Robert Walter Recruitment Agency. 
+                All rights reserved. | <a href="#">Privacy Policy</a> | 
+                <a href="#">Terms of Service</a> | <a href="#">Cookie Policy</a>
+            </p>
+        </div>
+    </div>
+</footer>
 
     <!-- ===== SCRIPTS ===== -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Newsletter Management Script -->
+<script>
+    // Newsletter subscription handler for employers.html
+    (function() {
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (!newsletterForm) return;
+            
+            newsletterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+                const email = emailInput.value.trim();
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnContent = submitBtn.innerHTML;
+                
+                // Email validation
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showNewsletterMessage(newsletterForm, '❌ Please enter a valid email address', 'error');
+                    return;
+                }
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+                
+                try {
+                    // Save to Firestore if available
+                    if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                        const db = firebase.firestore();
+                        await db.collection('newsletter_subscribers').add({
+                            email: email,
+                            subscribedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            source: 'employers_page',
+                            status: 'active'
+                        });
+                        showNewsletterMessage(newsletterForm, '✅ Subscribed successfully! Check your inbox soon.', 'success');
+                        emailInput.value = ''; // Clear input
+                    } else {
+                        // Fallback: Save to localStorage for demo
+                        let subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+                        if (!subscribers.includes(email)) {
+                            subscribers.push(email);
+                            localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers));
+                            showNewsletterMessage(newsletterForm, '✅ Subscribed successfully!', 'success');
+                            emailInput.value = '';
+                        } else {
+                            showNewsletterMessage(newsletterForm, '📧 You are already subscribed!', 'info');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Newsletter subscription error:', error);
+                    showNewsletterMessage(newsletterForm, '❌ Subscription failed. Please try again later.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnContent;
+                }
+            });
+        });
+        
+        function showNewsletterMessage(form, message, type) {
+            // Remove existing message
+            const existingMsg = form.querySelector('.newsletter-message');
+            if (existingMsg) existingMsg.remove();
+            
+            // Create message element
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `newsletter-message`;
+            msgDiv.style.cssText = `
+                margin-top: 10px;
+                padding: 8px 12px;
+                border-radius: 8px;
+                font-size: 0.8rem;
+                text-align: center;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            if (type === 'success') {
+                msgDiv.style.background = '#d4edda';
+                msgDiv.style.color = '#155724';
+                msgDiv.style.border = '1px solid #c3e6cb';
+            } else if (type === 'error') {
+                msgDiv.style.background = '#f8d7da';
+                msgDiv.style.color = '#721c24';
+                msgDiv.style.border = '1px solid #f5c6cb';
+            } else {
+                msgDiv.style.background = '#cce5ff';
+                msgDiv.style.color = '#004085';
+                msgDiv.style.border = '1px solid #b8daff';
+            }
+            
+            msgDiv.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            form.appendChild(msgDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (msgDiv.parentNode) msgDiv.remove();
+            }, 5000);
+        }
+    })();
+</script>
     <script>
         // ===== FIREBASE CONFIG =====
         const firebaseConfig = {
