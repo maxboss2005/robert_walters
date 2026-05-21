@@ -435,12 +435,14 @@
         }
         .table-search input:focus { outline: none; border-color: var(--gold); }
         .table-container {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--gray-200);
-            overflow: hidden;
-        }
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; 
+    width: 100%;
+}
         table { width: 100%; border-collapse: collapse; }
         table thead { background: var(--gray-50); }
         table th {
