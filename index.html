@@ -799,6 +799,11 @@
         document.querySelectorAll('.preloader-text span').forEach((span, index) => {
             span.style.setProperty('--i', index);
         });
+
+        if(db) {
+        loadFeaturedJobs();
+        setupRealtimeJobCount(); 
+    }
             document.getElementById('current-year').textContent = new Date().getFullYear();
             initTypingAnimation();
             initParticles();
@@ -905,34 +910,105 @@
             });
         }
 
-        // ===== LOAD FEATURED JOBS =====
-        async function loadFeaturedJobs() {
-            const grid = document.getElementById('all-jobs-grid');
-            if(!grid) return;
-            try {
-                const snapshot = await db.collection('jobs').orderBy('createdAt','desc').limit(6).get();
-                if(snapshot.empty) {
-                    grid.innerHTML = '<div class="empty-state"><i class="bi bi-inbox"></i><h3>No Jobs Posted Yet</h3><p>Check back soon!</p></div>';
-                    return;
-                }
-                const jobs = snapshot.docs.map(d => ({id:d.id,...d.data()}));
-                document.getElementById('live-jobs-count').textContent = jobs.length;
-                grid.innerHTML = jobs.map(job => {
-                    const date = job.createdAt?.toDate?.() || new Date();
-                    const daysAgo = Math.floor((new Date()-date)/(1000*60*60*24));
-                    const ago = daysAgo===0?'Today':daysAgo===1?'Yesterday':daysAgo<7?`${daysAgo} days ago`:date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-                    return `<div class="job-card" onclick="window.location.href='job-details.html?id=${job.id}'">
-                        <div class="job-card-header"><span class="job-card-type ${job.featured?'featured':''}"><i class="bi bi-briefcase-fill"></i> ${job.type||'Full-time'}</span>${job.featured?'<span style="color:var(--gold);font-size:0.8rem;"><i class="bi bi-star-fill"></i> Featured</span>':''}</div>
-                        <h3>${job.title||'Untitled'}</h3>
-                        <div class="job-card-meta"><span><i class="bi bi-geo-alt-fill"></i> ${job.country||'Various'}</span><span><i class="bi bi-folder-fill"></i> ${job.category||'General'}</span></div>
-                        <div class="job-card-footer"><span class="job-card-salary"><i class="bi bi-cash"></i> ${job.salary||'Competitive'}</span><span class="job-card-link">View Details <i class="bi bi-arrow-right"></i></span></div>
-                    </div>`;
-                }).join('');
-            } catch(e) {
-                console.error('Error loading jobs:', e);
-                grid.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle-fill"></i><h3>Error Loading Jobs</h3><p>Please try again later.</p></div>';
+        // ===== LOAD FEATURED JOBS & TOTAL JOB COUNT =====
+async function loadFeaturedJobs() {
+    const grid = document.getElementById('all-jobs-grid');
+    if(!grid) return;
+    
+    // Show loading state
+    grid.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading jobs...</p></div>';
+    
+    try {
+        // First, get ALL jobs to get the total count
+        const allJobsSnapshot = await db.collection('jobs').get();
+        const totalJobs = allJobsSnapshot.size; // Total number of jobs in Firestore
+        
+        // Update the "Active Jobs" counter with total jobs
+        const liveJobsElement = document.getElementById('live-jobs-count');
+        if (liveJobsElement) {
+            liveJobsElement.textContent = totalJobs;
+            // Also animate the counter
+            animateCounter(liveJobsElement, 0, totalJobs);
+        }
+        
+        // Then get only the latest 6 jobs for featured section
+        const featuredSnapshot = await db.collection('jobs').orderBy('createdAt','desc').limit(6).get();
+        
+        if(featuredSnapshot.empty) {
+            grid.innerHTML = '<div class="empty-state"><i class="bi bi-inbox"></i><h3>No Jobs Posted Yet</h3><p>Check back soon!</p></div>';
+            return;
+        }
+        
+        const jobs = featuredSnapshot.docs.map(d => ({id:d.id,...d.data()}));
+        
+        // Display the featured jobs
+        grid.innerHTML = jobs.map(job => {
+            const date = job.createdAt?.toDate?.() || new Date();
+            const daysAgo = Math.floor((new Date()-date)/(1000*60*60*24));
+            const ago = daysAgo===0?'Today':daysAgo===1?'Yesterday':daysAgo<7?`${daysAgo} days ago`:date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+            return `<div class="job-card" onclick="window.location.href='job-details.html?id=${job.id}'">
+                <div class="job-card-header"><span class="job-card-type ${job.featured?'featured':''}"><i class="bi bi-briefcase-fill"></i> ${job.type||'Full-time'}</span>${job.featured?'<span style="color:var(--gold);font-size:0.8rem;"><i class="bi bi-star-fill"></i> Featured</span>':''}</div>
+                <h3>${job.title||'Untitled'}</h3>
+                <div class="job-card-meta"><span><i class="bi bi-geo-alt-fill"></i> ${job.country||'Various'}</span><span><i class="bi bi-folder-fill"></i> ${job.category||'General'}</span></div>
+                <div class="job-card-footer"><span class="job-card-salary"><i class="bi bi-cash"></i> ${job.salary||'Competitive'}</span><span class="job-card-link">View Details <i class="bi bi-arrow-right"></i></span></div>
+            </div>`;
+        }).join('');
+        
+        // Show "View All Jobs" button if there are more than 6 jobs
+        const sectionCta = document.querySelector('.section-cta');
+        if (sectionCta && totalJobs > 6) {
+            // The button already exists, just ensure it's visible
+            sectionCta.style.display = 'block';
+        }
+        
+    } catch(e) {
+        console.error('Error loading jobs:', e);
+        grid.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle-fill"></i><h3>Error Loading Jobs</h3><p>Please try again later.</p></div>';
+        // Set fallback count
+        const liveJobsElement = document.getElementById('live-jobs-count');
+        if (liveJobsElement) liveJobsElement.textContent = '0';
+    }
+}
+
+// ===== REAL-TIME JOB COUNT LISTENER =====
+function setupRealtimeJobCount() {
+    if (!db) return;
+    
+    // Listen for real-time changes to the jobs collection
+    db.collection('jobs').onSnapshot((snapshot) => {
+        const totalJobs = snapshot.size;
+        const liveJobsElement = document.getElementById('live-jobs-count');
+        if (liveJobsElement) {
+            // Only update if the count has changed
+            const currentCount = parseInt(liveJobsElement.textContent);
+            if (currentCount !== totalJobs) {
+                animateCounter(liveJobsElement, currentCount, totalJobs);
             }
         }
+    }, (error) => {
+        console.error('Error in real-time job count:', error);
+    });
+}
+
+// Helper function for counter animation
+function animateCounter(element, start, end) {
+    if (!element) return;
+    let current = start;
+    const duration = 1000; // 1 second
+    const stepTime = 20;
+    const steps = duration / stepTime;
+    const increment = (end - start) / steps;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= end) {
+            clearInterval(timer);
+            element.textContent = end;
+        } else {
+            element.textContent = Math.floor(current);
+        }
+    }, stepTime);
+}
     </script>
 </body>
 </html>
